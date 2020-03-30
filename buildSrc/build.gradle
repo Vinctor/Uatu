@@ -1,0 +1,50 @@
+apply plugin: 'bintray-release'
+apply plugin: 'maven'
+apply plugin: 'groovy'
+
+dependencies {
+    implementation gradleApi()
+    implementation localGroovy()
+    implementation "com.android.tools.build:gradle:3.3.2"
+    implementation "org.ow2.asm:asm-all:5.1"
+}
+
+repositories {
+    google()
+    mavenCentral()
+    jcenter()
+    maven { url "https://plugins.gradle.org/m2/" }
+}
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.novoda:bintray-release:0.9.1'
+    }
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            pom.groupId = 'com.vinctor.plugin'
+            pom.artifactId = 'uatu'
+            pom.version = 1.0
+            // maven本地仓库的目录
+            repository(url: uri('../repo'))
+        }
+    }
+}
+
+publish {
+    artifactId = 'uatu'
+    userOrg = 'xcht1209'
+    groupId = 'com.vinctor.plugin'
+    publishVersion = '0.2.0'
+    website = 'https://github.com/Vinctor'
+    licences = ['Apache-2.0']
+    desc = 'trace mothod'
+}

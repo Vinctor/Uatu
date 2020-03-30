@@ -1,0 +1,28 @@
+[
+  {
+    "desc": "log日志",
+    "from": {
+      "className": "com.vinctor.Uatu.MainActivity",
+      "methodName": "log",
+      "methodDesc": "(Ljava/lang/String;)V"
+    },
+    "to": {
+      "className": "com.vinctor.Trace",
+      "methodName": "log",
+      "methodDesc": "(Lcom/vinctor/Uatu/MainActivity;Ljava/lang/String;)V"
+    }
+  },
+  {
+    "desc": "String 空判断",
+    "from": {
+      "className": "android.text.TextUtils",
+      "methodName": "isEmpty",
+      "methodDesc": "(Ljava/lang/CharSequence;)Z"
+    },
+    "to": {
+      "className": "com.vinctor.Trace",
+      "methodName": "isEmpty",
+      "methodDesc": "(Ljava/lang/CharSequence;)Z"
+    }
+  }
+]
