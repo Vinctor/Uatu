@@ -20,7 +20,7 @@
       "methodDesc": "(Ljava/lang/CharSequence;)Z"
     },
     "to": {
-      "className": "com.vinctor.Trace",
+      "className": "com.vinctor.MyTextUtils",
       "methodName": "isEmpty",
       "methodDesc": "(Ljava/lang/CharSequence;)Z"
     }

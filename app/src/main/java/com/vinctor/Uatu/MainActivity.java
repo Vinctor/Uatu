@@ -6,9 +6,10 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.vinctor.Uatu.test.Test;
-import com.vinctor.Uatu.test.TestAnnotation;
 import com.vinctor.Uatu.test.TestExclude;
 import com.vinctor.plugin.uatulib.TraceLog;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends Activity {
 
@@ -16,16 +17,31 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        log("onCreate");
-        TextUtils.isEmpty("123");
+        add(1, 1);
         new TestExclude().hashCode();
+        testReplace("adsadas",true);
+    }
+
+    private void testReplace(String adsadas,Boolean b) {
+        if (TextUtils.isEmpty(adsadas)) {
+
+        }
+    }
+
+    private int add(int i, int i1) {
+        return i + i1;
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         test();
-        log("onStart");
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                add(2, 3);
+            }
+        }).start();
     }
 
     void test2(long var1, Test test) {
@@ -34,24 +50,16 @@ public class MainActivity extends Activity {
     @Override
     protected void onStop() {
         super.onStop();
-        log("onStop");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        log("onResume");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        log("onPause");
-    }
-
-    @TraceLog
-    public void log(String msg) {
-        Log.d("main", msg);
     }
 
     void test() {
@@ -60,21 +68,8 @@ public class MainActivity extends Activity {
         test2(1, new Test());
 
         use(i);
-        testThread();
     }
 
-    @TraceLog
-    private long testThread() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                log("run in thread");
-            }
-        }).start();
-        return 54544555L;
-    }
-
-    @TestAnnotation
     String getid(String sss) {
         return "1";
     }
