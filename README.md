@@ -7,7 +7,7 @@
 一:
 root project `build.gradle`中添加:
 ```
-classpath com.vinctor.plugin:uatu:<version>
+classpath "com.vinctor.plugin:uatu:<version>"
 ```
 其中[![](https://api.bintray.com/packages/xcht1209/maven/uatu/images/download.svg)](https://bintray.com/xcht1209/maven/uatu/_latestVersion)
 
