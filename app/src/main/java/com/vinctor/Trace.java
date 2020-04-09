@@ -31,15 +31,6 @@ public class Trace {
         return id;
     }
 
-    /**
-     * 当一个方法退出时会调用
-     *
-     * @param id        上面start方法传回的标识, 可根据标识判断是否为同一次进入方法
-     * @param className 被跟踪的类名
-     * @param method    被跟踪的方法名
-     * @param signature 被跟踪的方法描述
-     * @param returnObj 该方法的返回值
-     */
     public static void end(String id, final String className, final String method, final String signature, final Object returnObj) {
         long endTs = System.currentTimeMillis();
         Long startTs = tsMap.get(id);
@@ -75,8 +66,4 @@ public class Trace {
         return sb.toString();
     }
 
-
-    public static boolean isEmpty(CharSequence str) {
-        return TextUtils.isEmpty(str);
-    }
 }

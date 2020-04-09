@@ -9,6 +9,8 @@ import com.vinctor.Uatu.test.Test;
 import com.vinctor.Uatu.test.TestExclude;
 import com.vinctor.plugin.uatulib.TraceLog;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends Activity {
 
     @Override
@@ -17,6 +19,13 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         add(1, 1);
         new TestExclude().hashCode();
+        testReplace("adsadas",true);
+    }
+
+    private void testReplace(String adsadas,Boolean b) {
+        if (TextUtils.isEmpty(adsadas)) {
+
+        }
     }
 
     private int add(int i, int i1) {
