@@ -6,10 +6,11 @@
 
 一:
 root project `build.gradle`中添加:
+```
+classpath com.vinctor.plugin:uatu:<version>
+```
+其中[![](https://api.bintray.com/packages/xcht1209/maven/uatu/images/download.svg)](https://bintray.com/xcht1209/maven/uatu/_latestVersion)
 
-```
-classpath com.vinctor.plugin:uatu:0.2.0
-```
 二:
 app module `build.gradle`中:
 
@@ -154,7 +155,7 @@ configFile : 替换配置文件路径, 该文件为一个json文件.
 改json文件为一个json数组, 里面有数个替换配置组成, 每个替换配置有如下结构:
 desc:该替换配置的描述, 可为空, 选填
 from: 原始方法描述
-to: 目标方法描述
+to: 目标方法描述, 需为`public static`方法
 其中:
 className: 类名称(全限定)
 methodName: 方法名称
@@ -196,6 +197,22 @@ public class MyTextUtils {
 则在编译过程中会根据配置替换完成, 从而打印出字符串:
 
  ![](./screenshot/replaceLog.png)
+
+* 需要注意的地方
+
+如果原始方法为静态方法, 目标方法的参数和返回类型需与原始方法保持一致;
+如果原始方法为非静态方法, 目标方法的第一个参数类型需为原始方法的调用类的类型, 后续参数需要与原始方法参数保持一致,
+```
+如原始方法调用为
+class A{
+    public void a(String str){}
+}
+
+那么替代方法则为
+class B{
+    public static void b(A a,String str){}
+}
+```
 
  ### 方法描述符
 
