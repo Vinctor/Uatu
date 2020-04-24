@@ -1,6 +1,8 @@
 package com.vinctor.Uatu.test;
 
-public class Test extends TestGrade {
+import com.vinctor.Uatu.BaseView;
+
+public class Test extends TestGrade implements BaseView {
     String name = "小明";
     int arg = 18;
 
@@ -15,5 +17,10 @@ public class Test extends TestGrade {
                 "name='" + name + '\'' +
                 ", arg=" + arg +
                 '}';
+    }
+
+    @Override
+    public void onCreate() {
+
     }
 }

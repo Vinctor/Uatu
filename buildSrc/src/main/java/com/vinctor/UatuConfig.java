@@ -36,6 +36,14 @@ public class UatuConfig {
         enable = isRepplaceEnable || isTraceEnable;
     }
 
+    public TraceConfig getTraceConfig() {
+        return traceConfig;
+    }
+
+    public ReplaceConfig getReplaceConfig() {
+        return replaceConfig;
+    }
+
     @Override
     public String toString() {
         return "UatuConfig{\n" +

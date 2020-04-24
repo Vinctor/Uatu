@@ -1,6 +1,10 @@
 package com.vinctor.replace;
 
+import com.vinctor.BaseClassVisitor;
 import com.vinctor.ReplaceConfig;
+import com.vinctor.UatuContext;
+import com.vinctor.classtree.ClassNode;
+import com.vinctor.classtree.ClassNodeGraph;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -8,21 +12,13 @@ import org.objectweb.asm.Opcodes;
 
 import java.util.List;
 
-public class ReplaceClassVisitor extends ClassVisitor {
+public class ReplaceClassVisitor extends BaseClassVisitor {
     private ReplaceConfig config;
     private boolean isNeedReplace = true;
 
-    public ReplaceClassVisitor(ClassVisitor cv, ReplaceConfig config) {
-        super(Opcodes.ASM5, cv);
-        this.config = config;
-    }
-
-    public ReplaceClassVisitor(int api) {
-        super(api);
-    }
-
-    public ReplaceClassVisitor(int api, ClassVisitor cv) {
-        super(api, cv);
+    public ReplaceClassVisitor(ClassVisitor cv, UatuContext context) {
+        super(Opcodes.ASM5, cv, context);
+        this.config = context.getConfig().getReplaceConfig();
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.vinctor.plugin.uatulib.TraceLog;
 
 import org.w3c.dom.Text;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements BaseView, Runnable {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,10 +19,10 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
         add(1, 1);
         new TestExclude().hashCode();
-        testReplace("adsadas",true);
+        testReplace("adsadas", true);
     }
 
-    private void testReplace(String adsadas,Boolean b) {
+    private void testReplace(String adsadas, Boolean b) {
         if (TextUtils.isEmpty(adsadas)) {
 
         }
@@ -68,6 +68,12 @@ public class MainActivity extends Activity {
         test2(1, new Test());
 
         use(i);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int p = 2 + 1;
+            }
+        }).start();
     }
 
     String getid(String sss) {
@@ -75,6 +81,16 @@ public class MainActivity extends Activity {
     }
 
     void use(String id) {
+
+    }
+
+    @Override
+    public void onCreate() {
+
+    }
+
+    @Override
+    public void run() {
 
     }
 }

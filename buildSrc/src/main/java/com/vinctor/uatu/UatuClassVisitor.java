@@ -1,7 +1,10 @@
 package com.vinctor.uatu;
 
+import com.vinctor.BaseClassVisitor;
 import com.vinctor.Log;
 import com.vinctor.TraceConfig;
+import com.vinctor.UatuConfig;
+import com.vinctor.UatuContext;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -9,24 +12,16 @@ import org.objectweb.asm.Opcodes;
 
 import java.util.List;
 
-public class UatuClassVisitor extends ClassVisitor {
+public class UatuClassVisitor extends BaseClassVisitor {
 
-    private TraceConfig config;
+    private final TraceConfig config;
     private String className;
     private boolean isAbs = false;
     private boolean isTrace = false;
 
-    public UatuClassVisitor(ClassVisitor cv, TraceConfig config) {
-        super(Opcodes.ASM5, cv);
-        this.config = config;
-    }
-
-    public UatuClassVisitor(int api) {
-        super(api);
-    }
-
-    public UatuClassVisitor(int api, ClassVisitor cv) {
-        super(api, cv);
+    public UatuClassVisitor(ClassVisitor cv, UatuContext context) {
+        super(Opcodes.ASM5, cv, context);
+        this.config = context.getConfig().getTraceConfig();
     }
 
     @Override

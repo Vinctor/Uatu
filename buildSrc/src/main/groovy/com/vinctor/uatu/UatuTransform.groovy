@@ -4,6 +4,9 @@ import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.vinctor.Log
 import com.vinctor.UatuConfig
+import com.vinctor.UatuContext
+import com.vinctor.classtree.ClassGraphVisitor
+
 import com.vinctor.replace.ReplaceClassVisitor
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
@@ -11,11 +14,13 @@ import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.ClassVisitor
 import org.objectweb.asm.ClassWriter
+import org.objectweb.asm.Opcodes
 
 class UatuTransform extends Transform {
 
     private Project project
     UatuConfig config;
+    UatuContext context;
 
     UatuTransform(Project project) {
         this.project = project
@@ -53,6 +58,9 @@ class UatuTransform extends Transform {
         if (outputProvider != null) {
             outputProvider.deleteAll();
         }
+        context = new UatuContext(config)
+
+        hanlderPreParse(inputs)
 
         inputs.each { TransformInput input ->
 
@@ -94,12 +102,12 @@ class UatuTransform extends Transform {
                     ClassVisitor upstreamCv = cw;
                     Log.i("chain:" + upstreamCv)
                     if (config.traceConfig != null && config.traceConfig.enable) {
-                        ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, config.traceConfig)
+                        ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, context)
                         upstreamCv = traceCv;
                     }
                     Log.i("chain:" + upstreamCv)
                     if (config.replaceConfig != null && config.replaceConfig.enable) {
-                        ClassVisitor replaceCv = new ReplaceClassVisitor(upstreamCv, config.replaceConfig)
+                        ClassVisitor replaceCv = new ReplaceClassVisitor(upstreamCv, context)
                         upstreamCv = replaceCv
                     }
                     Log.i("chain:" + upstreamCv)
@@ -112,6 +120,25 @@ class UatuTransform extends Transform {
                     fos.write(code)
                     fos.close()
                 }
+            }
+        }
+    }
+
+    void hanlderPreParse(inputs) {
+        inputs.each { TransformInput input ->
+            input.directoryInputs.each {
+                DirectoryInput directoryInput ->
+                    if (directoryInput.file.isDirectory()) {
+                        directoryInput.file.eachFileRecurse { File file ->
+                            def name = file.name
+                            if (name.endsWith(".class") && !name.startsWith("R\$") &&
+                                    !"R.class".equals(name) && !"BuildConfig.class".equals(name)) {
+                                ClassReader cr = new ClassReader(file.bytes)
+                                ClassGraphVisitor cv = new ClassGraphVisitor(Opcodes.ASM5);
+                                cr.accept(cv, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
+                            }
+                        }
+                    }
             }
         }
     }
