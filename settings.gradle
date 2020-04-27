@@ -1,1 +1,2 @@
 include ':app', ':buildSrc', /*':UatuTraceShow',*/ ':uatuCommon'
+include ':testbasemoudle'
