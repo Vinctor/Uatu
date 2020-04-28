@@ -11,6 +11,7 @@ public class TraceConfig {
     }
 
     public boolean enable = false;
+    public boolean jarEnable = true;
     public boolean logAllArgs = false;
     public String traceClass;
     public List<String> tracePackage;
@@ -48,6 +49,10 @@ public class TraceConfig {
                 return Utils.transformClassName(item);
             }
         });
+    }
+
+    public boolean isJarEnable() {
+        return jarEnable;
     }
 
     public void addReplaceExcluedClass(List<String> replaceExcluedClass) {

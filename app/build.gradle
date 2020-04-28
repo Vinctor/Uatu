@@ -5,15 +5,17 @@ UatuConfig {
     enable = true
     traceConfig {
         enable = true
+        jarEnable = false
         logAllArgs = true
         traceClass = 'com.vinctor.Trace'
-        tracePackage = ['com.vinctor','com.example.testbasemoudle']
+        tracePackage = ['com.vinctor', 'com.example.testbasemoudle']
         exclude = ['com.vinctor.Uatu.test.TestExclude']
     }
 
     replaceConfig {
         enable = true
-        configFile="replaceFile.json"
+        jarEnable = false
+        configFile = "replaceFile.json"
     }
 }
 android {

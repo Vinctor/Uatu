@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ReplaceConfig {
     boolean enable = false;
+    public boolean jarEnable = true;
     String configFile;
 
 
@@ -122,13 +123,16 @@ public class ReplaceConfig {
     }
 
 
-
     public List<String> getNeedToExclude() {
         return needToExclude;
     }
 
     public List<ReplaceBean> getReplaceList() {
         return replaceList;
+    }
+
+    public boolean isJarEnable() {
+        return jarEnable;
     }
 
     @Override

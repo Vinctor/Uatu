@@ -31,7 +31,7 @@ public class UatuConfig {
         if (traceConfig != null) {
             traceConfig.addReplaceExcluedClass(replaceExcluedClass);
             traceConfig.init(enable);
-            isTraceEnable = traceConfig.enable;
+            isTraceEnable = traceConfig.isEnable();
         }
         enable = isRepplaceEnable || isTraceEnable;
     }
@@ -42,6 +42,10 @@ public class UatuConfig {
 
     public ReplaceConfig getReplaceConfig() {
         return replaceConfig;
+    }
+
+    public boolean isEnable() {
+        return enable;
     }
 
     @Override

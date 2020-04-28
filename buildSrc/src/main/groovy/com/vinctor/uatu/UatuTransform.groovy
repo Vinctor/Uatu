@@ -6,11 +6,9 @@ import com.vinctor.Log
 import com.vinctor.UatuConfig
 import com.vinctor.UatuContext
 import com.vinctor.classtree.ClassGraphVisitor
-import com.vinctor.handler.PreStatisticsHanller
+import com.vinctor.handler.PreStatisticsHandler
 import com.vinctor.handler.TransformHandler
 import com.vinctor.replace.ReplaceClassVisitor
-import org.apache.commons.codec.digest.DigestUtils
-import org.apache.commons.io.FileUtils
 import org.apache.commons.io.IOUtils
 import org.apache.http.util.TextUtils
 import org.gradle.api.Project
@@ -68,8 +66,8 @@ class UatuTransform extends Transform {
         }
         context = new UatuContext(config)
 
-        new PreStatisticsHanller(transformInvocation).start();
-        new TransformHandler(transformInvocation, config, context).start();
+        PreStatisticsHandler.start(transformInvocation);
+        TransformHandler.start(transformInvocation, config, context);
 
         /*hanlderPreParse(inputs)
 

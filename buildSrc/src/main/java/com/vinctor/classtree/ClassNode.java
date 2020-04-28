@@ -1,6 +1,5 @@
 package com.vinctor.classtree;
 
-import com.android.builder.merge.MergeOutputWriter;
 import com.vinctor.util.NodeUtil;
 
 import org.apache.http.util.TextUtils;
@@ -42,7 +41,8 @@ public class ClassNode {
     }
 
     public ClassNode setParent(String className) {
-        if (TextUtils.isEmpty(className) || "java/lang/Object".equals(className)) return this;
+        if (TextUtils.isEmpty(className) || "java/lang/Object".equals(className))
+            return this;
         className = parseClassName(className);
         parent = ClassNodeGraph.getClassNode(className);
         if (parent == null) {
@@ -53,7 +53,8 @@ public class ClassNode {
     }
 
     public ClassNode setInterfaces(String[] interfaces) {
-        if (interfaces == null || interfaces.length == 0) return this;
+        if (interfaces == null || interfaces.length == 0)
+            return this;
         for (String anInterface : interfaces) {
             anInterface = parseClassName(anInterface);
             addInterfaceClass(anInterface);
@@ -88,7 +89,7 @@ public class ClassNode {
         ClassNodeGraph.getSingleton().addNode(classNode);
     }
 
-    String parseClassName(String className) {
+    public static String parseClassName(String className) {
         return className.replace("/", ".");
     }
 

@@ -6,9 +6,13 @@ import com.vinctor.classtree.ClassGraphVisitor;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;
 
-public class PreStatisticsHanller extends BaseHanlder {
-    public PreStatisticsHanller(TransformInvocation transformInvocation) {
+public class PreStatisticsHandler extends BaseHanlder {
+    public PreStatisticsHandler(TransformInvocation transformInvocation) {
         super(transformInvocation);
+    }
+
+    public static void start(TransformInvocation transformInvocation) {
+        new PreStatisticsHandler(transformInvocation).start();
     }
 
     @Override

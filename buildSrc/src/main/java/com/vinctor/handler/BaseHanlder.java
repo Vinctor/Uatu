@@ -6,7 +6,6 @@ import com.android.build.api.transform.JarInput;
 import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.api.transform.TransformOutputProvider;
-import com.android.ide.common.blame.parser.aapt.AbstractAaptOutputParser;
 import com.google.common.io.Files;
 
 import org.apache.commons.codec.digest.DigestUtils;
@@ -18,10 +17,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.Collection;
 import java.util.Enumeration;
-import java.util.function.Function;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.jar.JarOutputStream;
@@ -71,7 +68,7 @@ public abstract class BaseHanlder {
             Iterable<File> files = Files.fileTraverser().depthFirstPreOrder(fileDir);
             for (File f : files) {
                 String fileName = f.getName();
-                if (f.isFile() && checkFileName(fileName)) {
+                if (f.isFile() && checkFileName(fileName) && isEnable()) {
                     byte[] data = Files.toByteArray(f);
                     byte[] resultBytes = onHanlerFileInput(data);
                     FileOutputStream fos = new FileOutputStream(
@@ -105,11 +102,15 @@ public abstract class BaseHanlder {
     }
 
     File handlerJar(JarInput jarInput) throws IOException {
-        JarFile jarFile = new JarFile(jarInput.getFile());
-        System.out.println("jarInput:" + jarInput.getFile());
+        File originFile = jarInput.getFile();
+        if (!isEnable()) {
+            return originFile;
+        }
+        JarFile jarFile = new JarFile(originFile);
+        System.out.println("jarInput:" + originFile);
         Enumeration enumeration = jarFile.entries();
 
-        File tmpFile = new File(jarInput.getFile().getParent() + File.separator + "classes_temp.jar");
+        File tmpFile = new File(originFile.getParent() + File.separator + "classes_temp.jar");
         if (tmpFile.exists()) {
             tmpFile.delete();
         }
@@ -119,7 +120,6 @@ public abstract class BaseHanlder {
             JarEntry jarEntry = (JarEntry) enumeration.nextElement();
             String entryName = jarEntry.getName();
             if (!checkFileName(entryName)) continue;
-            System.out.println("entryName:" + entryName);
             ZipEntry zipEntry = new ZipEntry(entryName);
             InputStream inputStream = jarFile.getInputStream(jarEntry);
             if (true) {
@@ -145,6 +145,10 @@ public abstract class BaseHanlder {
             return false;
         return name.endsWith(".class") && !name.startsWith("R\\$") &&
                 !"R.class".equals(name) && !"BuildConfig.class".equals(name) && !name.endsWith("BuildConfig.class");
+    }
+
+    protected boolean isEnable() {
+        return true;
     }
 
     abstract byte[] onHanlerFileInput(byte[] bytes);
