@@ -6,7 +6,8 @@ import com.vinctor.Log
 import com.vinctor.UatuConfig
 import com.vinctor.UatuContext
 import com.vinctor.classtree.ClassGraphVisitor
-
+import com.vinctor.handler.PreStatisticsHanller
+import com.vinctor.handler.TransformHandler
 import com.vinctor.replace.ReplaceClassVisitor
 import org.apache.commons.codec.digest.DigestUtils
 import org.apache.commons.io.FileUtils
@@ -67,7 +68,10 @@ class UatuTransform extends Transform {
         }
         context = new UatuContext(config)
 
-        hanlderPreParse(inputs)
+        new PreStatisticsHanller(transformInvocation).start();
+        new TransformHandler(transformInvocation, config, context).start();
+
+        /*hanlderPreParse(inputs)
 
         inputs.each { TransformInput input ->
 
@@ -98,7 +102,7 @@ class UatuTransform extends Transform {
                 FileUtils.copyFile(tmpFile, dest)
                 tmpFile.delete()
             }
-        }
+        }*/
     }
 
     File handlerJar(JarInput jarInput) {
