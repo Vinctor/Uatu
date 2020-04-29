@@ -90,7 +90,7 @@ public class ClassNode {
     }
 
     public static String parseClassName(String className) {
-        return className.replace("/", ".");
+        return className;//.replace("/", ".");
     }
 
     public Set<ClassNode> findAllParentAndInterfaces() {

@@ -12,6 +12,20 @@
       "methodDesc": "(Lcom/vinctor/Uatu/MainActivity;Ljava/lang/String;)V"
     }
   },
+  ,
+  {
+    "desc": "抛异常",
+    "from": {
+      "className": "java.lang.Throwable",
+      "methodName": "printStackTrace",
+      "methodDesc": "()V"
+    },
+    "to": {
+      "className": "com.vinctor.Trace",
+      "methodName": "printStackTrace",
+      "methodDesc": "(Ljava/lang/Throwable;)V"
+    }
+  },
   {
     "desc": "String 空判断",
     "from": {

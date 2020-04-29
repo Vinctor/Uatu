@@ -18,14 +18,23 @@ public class MainActivity extends Activity implements BaseView, Runnable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         add(1, 1);
+        log("111");
         new TestExclude().hashCode();
         testReplace("adsadas", true);
+    }
+
+    static void hook(MainActivity activity, String msg) {
+        activity.log(msg);
     }
 
     private void testReplace(String adsadas, Boolean b) {
         if (TextUtils.isEmpty(adsadas)) {
 
         }
+    }
+
+    public void log(String msg) {
+
     }
 
     private int add(int i, int i1) {

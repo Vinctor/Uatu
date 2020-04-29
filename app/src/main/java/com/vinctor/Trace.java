@@ -1,5 +1,6 @@
 package com.vinctor;
 
+import android.app.Activity;
 import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
@@ -66,4 +67,11 @@ public class Trace {
         return sb.toString();
     }
 
+    public static void log(MainActivity activity, String msg) {
+        activity.log(msg);
+    }
+
+    public static void printStackTrace(Throwable throwable) {
+        throwable.printStackTrace();
+    }
 }

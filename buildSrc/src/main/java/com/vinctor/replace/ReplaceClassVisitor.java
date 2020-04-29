@@ -6,12 +6,23 @@ import com.vinctor.UatuContext;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.objectweb.asm.commons.GeneratorAdapter;
+import org.objectweb.asm.commons.Method;
+import org.objectweb.asm.tree.MethodNode;
 
+import java.nio.channels.Pipe;
+import java.util.ArrayList;
 import java.util.List;
+
+import static org.objectweb.asm.Opcodes.IADD;
+import static org.objectweb.asm.Opcodes.ILOAD;
+import static org.objectweb.asm.Opcodes.IRETURN;
+
 
 public class ReplaceClassVisitor extends BaseClassVisitor {
     private ReplaceConfig config;
     private boolean isNeedReplace = true;
+    private List<MethodNode> methodNodes = new ArrayList<>();
 
     public ReplaceClassVisitor(ClassVisitor cv, UatuContext context) {
         super(Opcodes.ASM5, cv, context);
@@ -38,6 +49,16 @@ public class ReplaceClassVisitor extends BaseClassVisitor {
         if (!isNeedReplace) {
             return methodVisitor;
         }
-        return new ReplaceMethodVisitor(Opcodes.ASM5, methodVisitor, access, name, desc, config);
+        return new ReplaceMethodVisitor(Opcodes.ASM5, methodVisitor, access, name, desc, config, methodNodes);
+    }
+
+    @Override
+    public void visitEnd() {
+        /*Method m = Method.getMethod("void main (String[])");
+        GeneratorAdapter mg = new GeneratorAdapter(Opcodes.ACC_PUBLIC, m, null, null, cv);
+        mg.loadArgs();
+        mg.returnValue();
+        mg.endMethod();*/
+        super.visitEnd();
     }
 }
