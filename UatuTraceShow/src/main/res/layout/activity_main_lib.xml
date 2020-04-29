@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.vinctor.uatu.ui.MainActivity">
+    tools:context="com.vinctor.trace.ui.MainActivity">
 
 
     <androidx.appcompat.widget.Toolbar

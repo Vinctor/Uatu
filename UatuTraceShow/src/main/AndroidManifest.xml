@@ -4,11 +4,11 @@
 
     <application>
         <activity
-            android:name="com.vinctor.uatu.ui.MainActivity"
+            android:name="com.vinctor.trace.ui.MainActivity"
             android:label="Uatu"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.vinctor.uatu.task"
+            android:taskAffinity="com.vinctor.trace.task"
             android:theme="@style/Uatu.Theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -17,7 +17,7 @@
         </activity>
 
         <provider
-            android:name="com.vinctor.uatu.UatuInitProvider"
+            android:name="com.vinctor.trace.UatuInitProvider"
             android:authorities="${applicationId}.UatuInitProvider" />
     </application>
 

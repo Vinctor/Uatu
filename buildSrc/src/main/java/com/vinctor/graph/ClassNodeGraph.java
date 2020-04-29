@@ -1,4 +1,4 @@
-package com.vinctor.classtree;
+package com.vinctor.graph;
 
 import org.apache.http.util.TextUtils;
 

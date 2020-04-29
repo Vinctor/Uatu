@@ -1,8 +1,9 @@
-package com.vinctor;
+package com.vinctor.replace;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.vinctor.replace.ReplaceBean;
+import com.vinctor.Log;
+import com.vinctor.Utils;
 
 import org.apache.http.util.TextUtils;
 import org.gradle.api.Project;
@@ -15,7 +16,7 @@ import java.util.List;
 
 public class ReplaceConfig {
     boolean enable = false;
-    public boolean jarEnable = true;
+    public boolean jarEnable = false;
     String configFile;
 
 
@@ -139,8 +140,10 @@ public class ReplaceConfig {
     public String toString() {
         return "ReplaceConfig{" +
                 "enable=" + enable +
+                ", jarEnable=" + jarEnable +
                 ", configFile='" + configFile + '\'' +
                 ", replaceList=" + replaceList +
+                ", needToExclude=" + needToExclude +
                 '}';
     }
 }

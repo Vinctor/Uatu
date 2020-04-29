@@ -2,12 +2,12 @@ package com.vinctor.handler;
 
 import com.android.build.api.transform.TransformInvocation;
 import com.vinctor.Log;
-import com.vinctor.ReplaceConfig;
-import com.vinctor.TraceConfig;
+import com.vinctor.replace.ReplaceConfig;
+import com.vinctor.trace.TraceConfig;
 import com.vinctor.UatuConfig;
 import com.vinctor.UatuContext;
 import com.vinctor.replace.ReplaceClassVisitor;
-import com.vinctor.uatu.UatuClassVisitor;
+import com.vinctor.trace.UatuClassVisitor;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.ClassVisitor;

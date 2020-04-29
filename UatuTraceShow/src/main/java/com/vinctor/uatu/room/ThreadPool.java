@@ -1,4 +1,4 @@
-package com.vinctor.uatu.room;
+package com.vinctor.trace.room;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;

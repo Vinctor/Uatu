@@ -1,10 +1,7 @@
 package com.vinctor.replace;
 
 import com.vinctor.BaseClassVisitor;
-import com.vinctor.ReplaceConfig;
 import com.vinctor.UatuContext;
-import com.vinctor.classtree.ClassNode;
-import com.vinctor.classtree.ClassNodeGraph;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;

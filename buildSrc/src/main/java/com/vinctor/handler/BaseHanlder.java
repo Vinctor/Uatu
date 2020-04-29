@@ -7,6 +7,7 @@ import com.android.build.api.transform.TransformInput;
 import com.android.build.api.transform.TransformInvocation;
 import com.android.build.api.transform.TransformOutputProvider;
 import com.google.common.io.Files;
+import com.vinctor.Log;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
@@ -107,7 +108,7 @@ public abstract class BaseHanlder {
             return originFile;
         }
         JarFile jarFile = new JarFile(originFile);
-        System.out.println("jarInput:" + originFile);
+        Log.i("jarInput:" + originFile);
         Enumeration enumeration = jarFile.entries();
 
         File tmpFile = new File(originFile.getParent() + File.separator + "classes_temp.jar");

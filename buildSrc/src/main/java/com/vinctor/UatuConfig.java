@@ -1,5 +1,8 @@
 package com.vinctor;
 
+import com.vinctor.replace.ReplaceConfig;
+import com.vinctor.trace.TraceConfig;
+
 import org.gradle.api.Project;
 
 import java.util.ArrayList;
@@ -24,7 +27,7 @@ public class UatuConfig {
         List<String> replaceExcluedClass = new ArrayList<>();
         if (replaceConfig != null) {
             replaceConfig.init(enable);
-            isRepplaceEnable = replaceConfig.enable;
+            isRepplaceEnable = replaceConfig.isEnable();
             replaceExcluedClass.clear();
             replaceExcluedClass.addAll(replaceConfig.getNeedToExclude());
         }

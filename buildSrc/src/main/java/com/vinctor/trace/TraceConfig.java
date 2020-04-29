@@ -1,4 +1,6 @@
-package com.vinctor;
+package com.vinctor.trace;
+
+import com.vinctor.Utils;
 
 import org.apache.http.util.TextUtils;
 
@@ -11,7 +13,7 @@ public class TraceConfig {
     }
 
     public boolean enable = false;
-    public boolean jarEnable = true;
+    public boolean jarEnable = false;
     public boolean logAllArgs = false;
     public String traceClass;
     public List<String> tracePackage;
@@ -66,6 +68,7 @@ public class TraceConfig {
     public String toString() {
         return "TraceConfig{" +
                 "enable=" + enable +
+                ", jarEnable=" + jarEnable +
                 ", logAllArgs=" + logAllArgs +
                 ", traceClass='" + traceClass + '\'' +
                 ", tracePackage=" + tracePackage +

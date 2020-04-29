@@ -1,4 +1,4 @@
-package com.vinctor.uatu.ui;
+package com.vinctor.trace.ui;
 
 import android.content.Context;
 import android.text.TextUtils;

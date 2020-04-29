@@ -1,6 +1,6 @@
 package com.vinctor.util;
 
-import com.vinctor.classtree.ClassNode;
+import com.vinctor.graph.ClassNode;
 
 import java.util.HashSet;
 import java.util.Set;

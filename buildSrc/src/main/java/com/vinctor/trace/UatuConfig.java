@@ -1,4 +1,4 @@
-package com.vinctor.uatu;
+package com.vinctor.trace;
 
 import java.util.Arrays;
 import java.util.List;

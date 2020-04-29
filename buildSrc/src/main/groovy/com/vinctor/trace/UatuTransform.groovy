@@ -1,11 +1,11 @@
-package com.vinctor.uatu
+package com.vinctor.trace
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
 import com.vinctor.Log
 import com.vinctor.UatuConfig
 import com.vinctor.UatuContext
-import com.vinctor.classtree.ClassGraphVisitor
+import com.vinctor.graph.ClassGraphVisitor
 import com.vinctor.handler.PreStatisticsHandler
 import com.vinctor.handler.TransformHandler
 import com.vinctor.replace.ReplaceClassVisitor

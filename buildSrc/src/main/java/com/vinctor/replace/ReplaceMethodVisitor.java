@@ -1,7 +1,6 @@
 package com.vinctor.replace;
 
 import com.vinctor.Log;
-import com.vinctor.ReplaceConfig;
 
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;

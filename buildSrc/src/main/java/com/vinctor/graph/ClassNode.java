@@ -1,4 +1,4 @@
-package com.vinctor.classtree;
+package com.vinctor.graph;
 
 import com.vinctor.util.NodeUtil;
 

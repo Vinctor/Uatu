@@ -1,6 +1,4 @@
-package com.vinctor.uatu;
-
-import com.vinctor.TraceConfig;
+package com.vinctor.trace;
 
 import org.objectweb.asm.AnnotationVisitor;
 import org.objectweb.asm.Label;

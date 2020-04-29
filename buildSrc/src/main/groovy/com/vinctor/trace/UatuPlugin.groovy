@@ -1,4 +1,4 @@
-package com.vinctor.uatu
+package com.vinctor.trace
 
 import com.vinctor.UatuConfig
 import org.gradle.api.Plugin

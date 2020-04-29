@@ -1,4 +1,4 @@
-package com.vinctor.uatu.room;
+package com.vinctor.trace.room;
 
 public class Constant {
     //sql

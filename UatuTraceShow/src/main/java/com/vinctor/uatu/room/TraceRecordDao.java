@@ -1,4 +1,4 @@
-package com.vinctor.uatu.room;
+package com.vinctor.trace.room;
 
 import android.net.wifi.aware.PublishConfig;
 
@@ -9,8 +9,8 @@ import androidx.room.util.StringUtil;
 
 import java.util.List;
 
-import static com.vinctor.uatu.room.Constant.ORDER_BY_START_TS_DESC;
-import static com.vinctor.uatu.room.Constant.TRACE_RECORD_TABLE_NAME;
+import static com.vinctor.trace.room.Constant.ORDER_BY_START_TS_DESC;
+import static com.vinctor.trace.room.Constant.TRACE_RECORD_TABLE_NAME;
 
 @Dao
 public interface TraceRecordDao {

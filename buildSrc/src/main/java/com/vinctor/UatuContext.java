@@ -1,6 +1,6 @@
 package com.vinctor;
 
-import com.vinctor.classtree.ClassNodeGraph;
+import com.vinctor.graph.ClassNodeGraph;
 
 public class UatuContext {
     UatuConfig config;

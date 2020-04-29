@@ -1,10 +1,10 @@
-package com.vinctor.uatu.room;
+package com.vinctor.trace.room;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import static com.vinctor.uatu.room.Constant.TRACE_RECORD_TABLE_NAME;
+import static com.vinctor.trace.room.Constant.TRACE_RECORD_TABLE_NAME;
 
 @Entity(tableName = TRACE_RECORD_TABLE_NAME)
 public class TraceRecord {

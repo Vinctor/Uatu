@@ -1,7 +1,7 @@
 package com.vinctor.handler;
 
 import com.android.build.api.transform.TransformInvocation;
-import com.vinctor.classtree.ClassGraphVisitor;
+import com.vinctor.graph.ClassGraphVisitor;
 
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.Opcodes;

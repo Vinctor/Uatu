@@ -1,4 +1,4 @@
-package com.vinctor.uatu;
+package com.vinctor.trace;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.net.Uri;
 
 import com.facebook.stetho.Stetho;
-import com.vinctor.uatu.room.UatuDatabase;
+import com.vinctor.trace.room.UatuDatabase;
 
 public class UatuInitProvider extends ContentProvider {
     @Override

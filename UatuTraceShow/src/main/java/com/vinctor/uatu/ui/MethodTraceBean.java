@@ -1,6 +1,6 @@
-package com.vinctor.uatu.ui;
+package com.vinctor.trace.ui;
 
-import com.vinctor.uatu.room.TraceRecord;
+import com.vinctor.trace.room.TraceRecord;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

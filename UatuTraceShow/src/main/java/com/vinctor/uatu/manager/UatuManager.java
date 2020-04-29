@@ -1,11 +1,11 @@
-package com.vinctor.uatu.manager;
+package com.vinctor.trace.manager;
 
 import android.util.Log;
 
-import com.vinctor.uatu.room.ThreadPool;
-import com.vinctor.uatu.room.TraceRecord;
-import com.vinctor.uatu.room.TraceRecordDao;
-import com.vinctor.uatu.room.UatuDatabase;
+import com.vinctor.trace.room.ThreadPool;
+import com.vinctor.trace.room.TraceRecord;
+import com.vinctor.trace.room.TraceRecordDao;
+import com.vinctor.trace.room.UatuDatabase;
 
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;

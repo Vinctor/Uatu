@@ -1,4 +1,4 @@
-package com.vinctor.uatu.ui;
+package com.vinctor.trace.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,11 +17,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.vinctor.uatu.room.Constant;
-import com.vinctor.uatu.room.ThreadPool;
-import com.vinctor.uatu.room.TraceRecord;
-import com.vinctor.uatu.room.TraceRecordDao;
-import com.vinctor.uatu.room.UatuDatabase;
+import com.vinctor.trace.room.Constant;
+import com.vinctor.trace.room.ThreadPool;
+import com.vinctor.trace.room.TraceRecord;
+import com.vinctor.trace.room.TraceRecordDao;
+import com.vinctor.trace.room.UatuDatabase;
 import com.vinctor.uatuLib.R;
 
 import java.lang.ref.WeakReference;

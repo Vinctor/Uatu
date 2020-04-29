@@ -1,9 +1,7 @@
-package com.vinctor.uatu;
+package com.vinctor.trace;
 
 import com.vinctor.BaseClassVisitor;
 import com.vinctor.Log;
-import com.vinctor.TraceConfig;
-import com.vinctor.UatuConfig;
 import com.vinctor.UatuContext;
 
 import org.objectweb.asm.ClassVisitor;
