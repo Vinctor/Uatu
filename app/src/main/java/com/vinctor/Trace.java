@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.vinctor.Uatu.BaseView;
 import com.vinctor.Uatu.MainActivity;
 
 import java.util.UUID;
@@ -73,5 +74,13 @@ public class Trace {
 
     public static void printStackTrace(Throwable throwable) {
         throwable.printStackTrace();
+    }
+
+    public static void onCreate(BaseView baseView) {
+        baseView.onCreate();
+    }
+
+    public static boolean isCorrect(BaseView baseView) {
+        return baseView.isCorrect();
     }
 }

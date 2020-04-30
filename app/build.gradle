@@ -4,7 +4,7 @@ apply plugin: com.vinctor.trace.UatuPlugin
 UatuConfig {
     enable = true
     traceConfig {
-        enable = true
+        enable = false
         jarEnable = false
         logAllArgs = true
         traceClass = 'com.vinctor.Trace'

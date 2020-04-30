@@ -168,14 +168,14 @@ class UatuTransform extends Transform {
         ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS)
         ClassVisitor upstreamCv = cw;
         Log.i("chain:" + upstreamCv)
-        if (config.traceConfig != null && config.traceConfig.enable) {
-            ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, context)
-            upstreamCv = traceCv;
-        }
-        Log.i("chain:" + upstreamCv)
         if (config.replaceConfig != null && config.replaceConfig.enable) {
             ClassVisitor replaceCv = new ReplaceClassVisitor(upstreamCv, context)
             upstreamCv = replaceCv
+        }
+        Log.i("chain:" + upstreamCv)
+        if (config.traceConfig != null && config.traceConfig.enable) {
+            ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, context)
+            upstreamCv = traceCv;
         }
         Log.i("chain:" + upstreamCv)
         cr.accept(upstreamCv, ClassReader.EXPAND_FRAMES)

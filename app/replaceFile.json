@@ -12,10 +12,10 @@
       "methodDesc": "(Lcom/vinctor/Uatu/MainActivity;Ljava/lang/String;)V"
     }
   },
-  ,
   {
     "desc": "抛异常",
     "from": {
+      "scopeType": "all",
       "className": "java.lang.Throwable",
       "methodName": "printStackTrace",
       "methodDesc": "()V"
@@ -37,6 +37,34 @@
       "className": "com.vinctor.MyTextUtils",
       "methodName": "isEmpty",
       "methodDesc": "(Ljava/lang/CharSequence;)Z"
+    }
+  },
+  {
+    "desc": "leaf 测试",
+    "from": {
+      "scopeType": "all",
+      "className": "com.vinctor.Uatu.BaseView",
+      "methodName": "onCreate",
+      "methodDesc": "()V"
+    },
+    "to": {
+      "className": "com.vinctor.Trace",
+      "methodName": "onCreate",
+      "methodDesc": "(Lcom/vinctor/Uatu/BaseView;)V"
+    }
+  },
+  {
+    "desc": "leaf 测试",
+    "from": {
+      "scopeType": "all",
+      "className": "com.vinctor.Uatu.BaseView",
+      "methodName": "isCorrect",
+      "methodDesc": "()Z"
+    },
+    "to": {
+      "className": "com.vinctor.Trace",
+      "methodName": "isCorrect",
+      "methodDesc": "(Lcom/vinctor/Uatu/BaseView;)Z"
     }
   }
 ]

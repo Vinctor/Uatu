@@ -72,6 +72,7 @@ public class ReplaceConfig {
                 Log.e(TAG, configFile.getAbsolutePath() + "无转换数据");
                 return;
             }
+            needToExclude.clear();
             Iterator<ReplaceBean> iterator = replaceList.iterator();
             while (iterator.hasNext()) {
                 ReplaceBean bean = iterator.next();
@@ -112,7 +113,6 @@ public class ReplaceConfig {
                     continue;
                 }
 
-                needToExclude.clear();
                 needToExclude.add(to.className);
             }
         } catch (Exception e) {

@@ -23,4 +23,9 @@ public class Test extends TestGrade implements BaseView {
     public void onCreate() {
 
     }
+
+    @Override
+    public boolean isCorrect() {
+        return false;
+    }
 }

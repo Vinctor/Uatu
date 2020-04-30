@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.vinctor.TestHook;
 import com.vinctor.Uatu.test.Test;
 import com.vinctor.Uatu.test.TestExclude;
 import com.vinctor.plugin.uatulib.TraceLog;
@@ -18,19 +19,15 @@ public class MainActivity extends Activity implements BaseView, Runnable {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         add(1, 1);
-        log("111");
         new TestExclude().hashCode();
         testReplace("adsadas", true);
-    }
-
-    static void hook(MainActivity activity, String msg) {
-        activity.log(msg);
+        TestHook.test();
     }
 
     private void testReplace(String adsadas, Boolean b) {
-        if (TextUtils.isEmpty(adsadas)) {
+        /*if (TextUtils.isEmpty(adsadas)) {
 
-        }
+        }*/
     }
 
     public void log(String msg) {
@@ -96,6 +93,11 @@ public class MainActivity extends Activity implements BaseView, Runnable {
     @Override
     public void onCreate() {
 
+    }
+
+    @Override
+    public boolean isCorrect() {
+        return false;
     }
 
     @Override

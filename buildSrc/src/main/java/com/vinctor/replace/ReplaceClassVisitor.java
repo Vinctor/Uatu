@@ -2,6 +2,7 @@ package com.vinctor.replace;
 
 import com.vinctor.BaseClassVisitor;
 import com.vinctor.UatuContext;
+import com.vinctor.util.TypeUtil;
 
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
@@ -12,8 +13,13 @@ import org.objectweb.asm.tree.MethodNode;
 
 import java.nio.channels.Pipe;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import it.unimi.dsi.fastutil.Hash;
+
+import static org.objectweb.asm.Opcodes.ACC_PUBLIC;
 import static org.objectweb.asm.Opcodes.IADD;
 import static org.objectweb.asm.Opcodes.ILOAD;
 import static org.objectweb.asm.Opcodes.IRETURN;
@@ -22,7 +28,8 @@ import static org.objectweb.asm.Opcodes.IRETURN;
 public class ReplaceClassVisitor extends BaseClassVisitor {
     private ReplaceConfig config;
     private boolean isNeedReplace = true;
-    private List<MethodNode> methodNodes = new ArrayList<>();
+    private HashMap<String, GeneratorAdapter> methodNodes = new HashMap<>();
+    private boolean isCanGenarate;
 
     public ReplaceClassVisitor(ClassVisitor cv, UatuContext context) {
         super(Opcodes.ASM5, cv, context);
@@ -31,6 +38,7 @@ public class ReplaceClassVisitor extends BaseClassVisitor {
 
     @Override
     public void visit(int version, int access, String name, String signature, String superName, String[] interfaces) {
+        isCanGenarate = !TypeUtil.isInterface(access);
         List<String> needToExclude = config.getNeedToExclude();
         if (needToExclude != null) {
             for (String item : needToExclude) {
@@ -49,16 +57,24 @@ public class ReplaceClassVisitor extends BaseClassVisitor {
         if (!isNeedReplace) {
             return methodVisitor;
         }
-        return new ReplaceMethodVisitor(Opcodes.ASM5, methodVisitor, access, name, desc, config, methodNodes);
+        return new ReplaceMethodVisitor(Opcodes.ASM5, methodVisitor, access, name, desc, config, methodNodes, cv,className);
     }
 
     @Override
     public void visitEnd() {
-        /*Method m = Method.getMethod("void main (String[])");
-        GeneratorAdapter mg = new GeneratorAdapter(Opcodes.ACC_PUBLIC, m, null, null, cv);
-        mg.loadArgs();
-        mg.returnValue();
-        mg.endMethod();*/
+        if (isCanGenarate) {
+            for (Map.Entry<String, GeneratorAdapter> stringGeneratorAdapterEntry : methodNodes.entrySet()) {
+                stringGeneratorAdapterEntry.getValue().endMethod();
+            }
+            /*MethodVisitor mv = cv.visitMethod(ACC_PUBLIC, "add", "(II)I", null, null);
+            mv.visitCode();
+            mv.visitVarInsn(ILOAD, 1);
+            mv.visitVarInsn(ILOAD, 2);
+            mv.visitInsn(IADD);
+            mv.visitInsn(IRETURN);
+            mv.visitMaxs(2, 3);
+            mv.visitEnd();*/
+        }
         super.visitEnd();
     }
 }
