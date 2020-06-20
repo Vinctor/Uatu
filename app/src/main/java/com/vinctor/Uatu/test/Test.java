@@ -1,5 +1,7 @@
 package com.vinctor.Uatu.test;
 
+import com.vinctor.MyTextUtils;
+import com.vinctor.Trace;
 import com.vinctor.Uatu.BaseView;
 
 public class Test extends TestGrade implements BaseView {
@@ -27,5 +29,15 @@ public class Test extends TestGrade implements BaseView {
     @Override
     public boolean isCorrect() {
         return false;
+    }
+
+    @Override
+    public Trace getTrace(MyTextUtils myTextUtils) {
+        return null;
+    }
+
+    @Override
+    public void getArray(String[][] a) {
+
     }
 }

@@ -3,7 +3,7 @@ package com.vinctor.replace;
 import java.util.HashMap;
 
 public class Constants {
-    static class Scope {
+    public static class Scope {
         public final static String SCOPE_SELF = "self";
         public final static String SCOPE_ALL = "all";
         public final static String SCOPE_LEAF = "leaf";

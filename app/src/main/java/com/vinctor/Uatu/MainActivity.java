@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.vinctor.MyTextUtils;
 import com.vinctor.TestHook;
+import com.vinctor.Trace;
 import com.vinctor.Uatu.test.Test;
 import com.vinctor.Uatu.test.TestExclude;
 import com.vinctor.plugin.uatulib.TraceLog;
@@ -98,6 +100,16 @@ public class MainActivity extends Activity implements BaseView, Runnable {
     @Override
     public boolean isCorrect() {
         return false;
+    }
+
+    @Override
+    public Trace getTrace(MyTextUtils myTextUtils) {
+        return null;
+    }
+
+    @Override
+    public void getArray(String[][] a) {
+
     }
 
     @Override

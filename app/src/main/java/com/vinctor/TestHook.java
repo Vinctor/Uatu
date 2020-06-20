@@ -13,11 +13,15 @@ public class TestHook {
         TestExclude view = new TestExclude();
         view.onCreate();
         view.isCorrect();
+        view.getTrace(null);
+        view.getArray(null);
         Exception e = new Exception("测试抛出异常");
         e.printStackTrace();
 
         TestExclude view2 = new TestExclude();
         view2.onCreate();
         view2.isCorrect();
+        view2.getTrace(null);
+        view.getArray(null);
     }
 }

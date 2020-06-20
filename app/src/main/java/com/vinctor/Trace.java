@@ -83,4 +83,12 @@ public class Trace {
     public static boolean isCorrect(BaseView baseView) {
         return baseView.isCorrect();
     }
+
+    public static Trace getTrace(BaseView baseView, MyTextUtils myTextUtils) {
+        return null;
+    }
+
+    void getArray(BaseView baseView, String[][] a) {
+
+    }
 }

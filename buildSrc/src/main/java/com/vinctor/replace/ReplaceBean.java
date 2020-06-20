@@ -5,46 +5,45 @@ import org.apache.http.util.TextUtils;
 public class ReplaceBean {
 
     public String desc;
-    public methodBean from;
-    public methodBean to;
+    private String scopeType;
+    public MethodBean from;
+    public MethodBean to;
 
-    public static class methodBean {
-        private String scopeType;
+    public String getScopeType() {
+        if (TextUtils.isEmpty(scopeType)) {
+            scopeType = Constants.Scope.SCOPE_SELF;
+        }
+        scopeType = scopeType.toLowerCase();
+        return scopeType;
+    }
+
+    public int getScopeTypeInt() {
+        String scopeType = getScopeType();
+        return Constants.Scope.getTypeInt(scopeType);
+    }
+
+    public void setScopeType(String scopeType) {
+        this.scopeType = scopeType;
+    }
+
+    public static class MethodBean {
         public String className;
         public String methodName;
         public String methodDesc;
+        public String method;
 
         public boolean validate() {
             return !TextUtils.isEmpty(className)
-                    && !TextUtils.isEmpty(methodName)
-                    && !TextUtils.isEmpty(methodDesc)
-                    && !"<init>".equals(methodName);
+                    && !TextUtils.isEmpty(method)
+                    && !method.contains("<init>");
         }
 
-        public String getScopeType() {
-            if (TextUtils.isEmpty(scopeType)) {
-                scopeType = Constants.Scope.SCOPE_SELF;
-            }
-            scopeType = scopeType.toLowerCase();
-            return scopeType;
-        }
-
-        public void setScopeType(String scopeType) {
-            this.scopeType = scopeType;
-        }
-
-        public int getScopeTypeInt() {
-            String scopeType = getScopeType();
-            return Constants.Scope.getTypeInt(scopeType);
-        }
 
         @Override
         public String toString() {
             return "methodBean{" +
-                    "type='" + scopeType + '\'' +
                     ", className='" + className + '\'' +
-                    ", methodName='" + methodName + '\'' +
-                    ", methodDesc='" + methodDesc + '\'' +
+                    ", methodName='" + method + '\'' +
                     '}';
         }
     }
@@ -55,6 +54,7 @@ public class ReplaceBean {
                 "desc='" + desc + '\'' +
                 ", \n" + index + "-->from=" + from +
                 ", \n" + (index++) + "-->to=" + to +
+                "type='" + scopeType + '\'' +
                 '}';
     }
 

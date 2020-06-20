@@ -3,68 +3,82 @@
     "desc": "log日志",
     "from": {
       "className": "com.vinctor.Uatu.MainActivity",
-      "methodName": "log",
-      "methodDesc": "(Ljava/lang/String;)V"
+      "method": "void log(java.lang.String)"
     },
     "to": {
       "className": "com.vinctor.Trace",
-      "methodName": "log",
-      "methodDesc": "(Lcom/vinctor/Uatu/MainActivity;Ljava/lang/String;)V"
+      "method": "void log(com.vinctor.Uatu.MainActivity,Ljava.lang.String)"
     }
   },
   {
     "desc": "抛异常",
+    "scopeType": "all",
     "from": {
-      "scopeType": "all",
       "className": "java.lang.Throwable",
-      "methodName": "printStackTrace",
-      "methodDesc": "()V"
+      "method": "void printStackTrace()"
     },
     "to": {
       "className": "com.vinctor.Trace",
-      "methodName": "printStackTrace",
-      "methodDesc": "(Ljava/lang/Throwable;)V"
+      "method": "void printStackTrace(java.lang.Throwable)"
     }
   },
   {
     "desc": "String 空判断",
     "from": {
       "className": "android.text.TextUtils",
-      "methodName": "isEmpty",
-      "methodDesc": "(Ljava/lang/CharSequence;)Z"
+      "method": "boolean isEmpty(java.lang.CharSequence)"
     },
     "to": {
       "className": "com.vinctor.MyTextUtils",
-      "methodName": "isEmpty",
-      "methodDesc": "(Ljava/lang/CharSequence;)Z"
+      "method": "boolean isEmpty(java.lang.CharSequence)"
     }
   },
   {
     "desc": "leaf 测试",
+    "scopeType": "all",
     "from": {
-      "scopeType": "all",
       "className": "com.vinctor.Uatu.BaseView",
-      "methodName": "onCreate",
-      "methodDesc": "()V"
+      "method": "void onCreate()"
     },
     "to": {
       "className": "com.vinctor.Trace",
-      "methodName": "onCreate",
-      "methodDesc": "(Lcom/vinctor/Uatu/BaseView;)V"
+      "method": "void onCreate(com.vinctor.Uatu.BaseView)"
     }
   },
   {
     "desc": "leaf 测试",
+    "scopeType": "all",
     "from": {
-      "scopeType": "all",
       "className": "com.vinctor.Uatu.BaseView",
-      "methodName": "isCorrect",
-      "methodDesc": "()Z"
+      "method": "boolean isCorrect()"
     },
     "to": {
       "className": "com.vinctor.Trace",
-      "methodName": "isCorrect",
-      "methodDesc": "(Lcom/vinctor/Uatu/BaseView;)Z"
+      "method": "boolean isCorrect(com.vinctor.Uatu.BaseView)"
+    }
+  },
+  {
+    "desc": "leaf 测试",
+    "scopeType": "all",
+    "from": {
+      "className": "com.vinctor.Uatu.BaseView",
+      "method": "com.vinctor.Trace getTrace(com.vinctor.MyTextUtils)"
+    },
+    "to": {
+      "className": "com.vinctor.Trace",
+      "method": "com.vinctor.Trace getTrace(com.vinctor.Uatu.BaseView,Lcom.vinctor.MyTextUtils)"
+    }
+  },
+  {
+    "desc": "leaf 测试",
+    "scopeType": "all",
+    "from": {
+      "className": "com.vinctor.Uatu.BaseView",
+      "method": "void getArray(java.lang.String[][])"
+    },
+    "to": {
+      "className": "com.vinctor.Trace",
+      "method": "void getArray(com.vinctor.Uatu.BaseView,Ljava.lang.String[][])"
     }
   }
 ]

@@ -37,17 +37,18 @@ public class ReplaceMethodVisitor extends GeneratorAdapter {
         List<ReplaceBean> replaceList = config.getReplaceList();
         Log.i("visitMethodInsn", opcode + "-" + name);
         for (ReplaceBean replaceBean : replaceList) {
-            ReplaceBean.methodBean from = replaceBean.from;
-            ReplaceBean.methodBean to = replaceBean.to;
-            if (name.equals(from.methodName) && desc.equals(from.methodDesc) && handlerMethod(opcode, owner, name, desc, from, to, itf)) {
+            ReplaceBean.MethodBean from = replaceBean.from;
+            if (name.equals(from.methodName) && desc.equals(from.methodDesc) && handlerMethod(opcode, owner, name, desc, replaceBean, itf)) {
                 return;
             }
         }
         super.visitMethodInsn(opcode, owner, name, desc, itf);
     }
 
-    boolean handlerMethod(int opcode, String originClassName, String originMethodName, String desc, ReplaceBean.methodBean from, ReplaceBean.methodBean to, boolean itf) {
-        int scopeTypeInt = from.getScopeTypeInt();
+    boolean handlerMethod(int opcode, String originClassName, String originMethodName, String desc, ReplaceBean replaceBean, boolean itf) {
+        ReplaceBean.MethodBean from = replaceBean.from;
+        ReplaceBean.MethodBean to = replaceBean.to;
+        int scopeTypeInt = replaceBean.getScopeTypeInt();
         //self
         if (scopeTypeInt == Constants.Scope.SCOPE_SELF_TYPE && originClassName.equals(from.className)) {
             super.visitMethodInsn(Opcodes.INVOKESTATIC, to.className, to.methodName, to.methodDesc, false);
@@ -88,9 +89,9 @@ public class ReplaceMethodVisitor extends GeneratorAdapter {
         return false;
     }
 
-    private void generateLeafMothod(int opcode, String originMethodClassName, String originMethodName, String originDesc, ReplaceBean.methodBean from, ReplaceBean.methodBean to, boolean itf) {
+    private void generateLeafMothod(int opcode, String originMethodClassName, String originMethodName, String originDesc, ReplaceBean.MethodBean from, ReplaceBean.MethodBean to, boolean itf) {
         String methodKey = getMethodKey(opcode, originMethodClassName, originMethodName, originDesc);
-        String methodName = getMethodName(originMethodClassName, originMethodName);
+        String methodName = getMethodGeneratedName(originMethodClassName, originMethodName, originDesc);
         GeneratorAdapter methodVisitor = methodNodes.get(methodKey);
         Type[] originArgTypes = Type.getArgumentTypes(originDesc);
         Type[] argTypes = originArgTypes;
@@ -109,12 +110,12 @@ public class ReplaceMethodVisitor extends GeneratorAdapter {
             methodVisitor.instanceOf(Type.getType(from.className));
             Label elseLabel = methodVisitor.newLabel();
             methodVisitor.ifZCmp(EQ, elseLabel);
-            methodVisitor.loadArg(0);
+            methodVisitor.loadArgs();
             methodVisitor.invokeStatic(Type.getObjectType(to.className), new Method(to.methodName, to.methodDesc));
             Label labelContinue = methodVisitor.newLabel();
             methodVisitor.goTo(labelContinue);
             methodVisitor.mark(elseLabel);
-            methodVisitor.loadArg(0);
+            methodVisitor.loadArgs();
             methodVisitor.visitMethodInsn(opcode, originMethodClassName, originMethodName, originDesc, itf);
             methodVisitor.mark(labelContinue);
             methodVisitor.returnValue();
@@ -127,7 +128,30 @@ public class ReplaceMethodVisitor extends GeneratorAdapter {
         return opcode + "_" + originClassName + "_" + originMethodName + "_" + desc;
     }
 
-    String getMethodName(String originClassName, String originMethodName) {
-        return originClassName.replace('/', '_') + "_" + originMethodName;
+    String getMethodGeneratedName(String originClassName, String originMethodName, String originDesc) {
+        return "uatu$" + getparseClassName(originClassName) + "_" + originMethodName + "_" + getParseDesc(originDesc);
+    }
+
+    private String getparseClassName(String originClassName) {
+        originClassName = originClassName.replace("[", "L").replace("]", "J");
+        String className = originClassName.replace('/', '_');
+        String[] splits = className.replace('/', '_').replace('.', '_').split("_");
+        if (splits.length == 0) {
+            return className;
+        }
+        return splits[splits.length - 1];
+    }
+
+
+    private String getParseDesc(String originDesc) {
+        StringBuilder sb = new StringBuilder();
+        Type[] argumentTypes = Type.getArgumentTypes(originDesc);
+        Type returnType = Type.getReturnType(originDesc);
+        for (Type argumentType : argumentTypes) {
+            sb.append(getparseClassName(argumentType.getClassName())).append("_");
+        }
+        sb.append(getparseClassName(returnType.getClassName()));
+
+        return sb.toString();
     }
 }

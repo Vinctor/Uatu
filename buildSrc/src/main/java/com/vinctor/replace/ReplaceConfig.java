@@ -8,6 +8,7 @@ import com.vinctor.Utils;
 import org.apache.http.util.TextUtils;
 import org.gradle.api.Project;
 import org.objectweb.asm.Type;
+import org.objectweb.asm.commons.Method;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,8 +81,8 @@ public class ReplaceConfig {
                     iterator.remove();
                     continue;
                 }
-                ReplaceBean.methodBean from = bean.from;
-                ReplaceBean.methodBean to = bean.to;
+                ReplaceBean.MethodBean from = bean.from;
+                ReplaceBean.MethodBean to = bean.to;
                 if (from == null || to == null) {
                     Log.e(TAG, bean.desc + "，from或to为null，已移除");
                     iterator.remove();
@@ -94,8 +95,12 @@ public class ReplaceConfig {
                 }
                 from.className = Utils.transformClassName(from.className);
                 to.className = Utils.transformClassName(to.className);
-                from.methodDesc = Utils.transformClassName(from.methodDesc);
-                to.methodDesc = Utils.transformClassName(to.methodDesc);
+                Method fromMethod = Method.getMethod(from.method);
+                Method toMethod = Method.getMethod(to.method);
+                from.methodName = fromMethod.getName();
+                from.methodDesc = fromMethod.getDescriptor();
+                to.methodName = toMethod.getName();
+                to.methodDesc = toMethod.getDescriptor();
                 try {
                     Type fromMethodType = Type.getMethodType(from.methodDesc);
                     Type toMethodType = Type.getMethodType(to.methodDesc);
