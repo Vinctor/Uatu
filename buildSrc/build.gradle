@@ -43,7 +43,7 @@ publish {
     artifactId = 'uatu'
     userOrg = 'xcht1209'
     groupId = 'com.vinctor.plugin'
-    publishVersion = '0.2.0'
+    publishVersion = '0.2.2'
     website = 'https://github.com/Vinctor'
     licences = ['Apache-2.0']
     desc = 'trace mothod'
