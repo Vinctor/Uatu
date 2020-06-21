@@ -151,6 +151,8 @@ configFile : 替换配置文件路径, 该文件为一个json文件.
   }
 ]
 ```
+
+```
 该json文件为一个json数组, 里面有数个替换配置组成, 每个替换配置有如下结构:
 `desc`:该替换配置的描述, 可为空, 选填
 `scopeType`: 类匹配方式，分别为all/leaf/self,
@@ -163,6 +165,7 @@ configFile : 替换配置文件路径, 该文件为一个json文件.
 `className`: 类名称(全限定)
 `method`: 方法描述：格式为`返回类型 方法名(参数列表)`
 　　　如：`TextUtils.isEmpty()`方法可描述为`boolean isEmpty(java.lang.CharSequence)`
+```
 
 如: 我们要把`TextUtils.isEmpty()`,替换为`MyTextUtils.isEmpty()`,
 则配置如下:
