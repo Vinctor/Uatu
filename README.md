@@ -138,44 +138,57 @@ configFile : 替换配置文件路径, 该文件为一个json文件.
 ```
 [
   {
-    "desc": "",
+    "desc": "xxx",
+    "scopeType": "all",     //all,leaf,self
     "from": {
       "className": "",
-      "methodName": "",
-      "methodDesc": ""
+      "method": ""
     },
     "to": {
       "className": "",
-      "methodName": "",
-      "methodDesc": ""
+      "method": ""
     }
   }
 ]
-
-改json文件为一个json数组, 里面有数个替换配置组成, 每个替换配置有如下结构:
-desc:该替换配置的描述, 可为空, 选填
-from: 原始方法描述
-to: 目标方法描述, 需为`public static`方法
-其中:
-className: 类名称(全限定)
-methodName: 方法名称
-methodDesc: 方法描述符
 ```
+该json文件为一个json数组, 里面有数个替换配置组成, 每个替换配置有如下结构:
+`desc`:该替换配置的描述, 可为空, 选填
+`scopeType`: 类匹配方式，分别为all/leaf/self,
+　　　 `all`: 所有`className`目标类及子类都可匹配到，如`java.lang.Throwable`, 则所有的`Exception`和`Error`都将匹配到；
+　　　`leaf`：可匹配到目标类`className`的叶子类，中间类不匹配；
+　　　`self`：只可以匹配大盘`className`本身
+`from`: 原始方法描述
+`to`: 目标方法描述, 需为`public static`方法
+其中:
+`className`: 类名称(全限定)
+`method`: 方法描述：格式为`返回类型 方法名(参数列表)`
+　　　如：`TextUtils.isEmpty()`方法可描述为`boolean isEmpty(java.lang.CharSequence)`
+
 如: 我们要把`TextUtils.isEmpty()`,替换为`MyTextUtils.isEmpty()`,
 则配置如下:
 ```
 [
   {
-    "desc": "String 空判断替换",
+    "desc": "抛异常",
+    "scopeType": "all",
+    "from": {
+      "className": "java.lang.Throwable",
+      "method": "void printStackTrace()"
+    },
+    "to": {
+      "className": "com.vinctor.Trace",
+      "method": "void printStackTrace(java.lang.Throwable)"
+    }
+  },
+  {
+    "desc": "String 空判断",
     "from": {
       "className": "android.text.TextUtils",
-      "methodName": "isEmpty",
-      "methodDesc": "(Ljava/lang/CharSequence;)Z"
+      "method": "boolean isEmpty(java.lang.CharSequence)"
     },
     "to": {
       "className": "com.vinctor.MyTextUtils",
-      "methodName": "isEmpty",
-      "methodDesc": "(Ljava/lang/CharSequence;)Z"
+      "method": "boolean isEmpty(java.lang.CharSequence)"
     }
   }
 ]
@@ -213,25 +226,6 @@ class B{
     public static void b(A a,String str){}
 }
 ```
-
- ### 方法描述符
-
- 方法描述符: 用一个字符串来描述一个方法的`参数类型`和`返回类型`.
-
- 描述符已左括号`(`开头,然后是每个参数的类型描述符, 然后是一个右括号`)`, 接下来是返回类型的描述符, 如果返回`void`,则是大写的`V`
-
-不同类型的描述符如下:
-
- ![](./screenshot/methodDesc.png)
-
-
-其中, 非基本类型的描述符, 是这个类的全限定名(`.`替换为`/`),前面添加字符`L`, 后面添加一个分号`;`,如  
-`String`的描述符为`Ljava/lang/String;`,
-
-`Boolean`的描述符为`Ljava/lang/Boolean;`
-
-数组的描述符是一个方括号`[`,后面跟数组元素类型的描述符, 二维数组则是`[[`
-
 
 License
 -------
