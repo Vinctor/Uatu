@@ -2,7 +2,7 @@ package com.vinctor.replace;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import com.vinctor.Log;
+import com.vinctor.log.Log;
 import com.vinctor.Utils;
 
 import org.apache.http.util.TextUtils;

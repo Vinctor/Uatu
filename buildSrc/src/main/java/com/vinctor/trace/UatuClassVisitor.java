@@ -1,7 +1,7 @@
 package com.vinctor.trace;
 
 import com.vinctor.BaseClassVisitor;
-import com.vinctor.Log;
+import com.vinctor.log.Log;
 import com.vinctor.UatuContext;
 
 import org.objectweb.asm.ClassVisitor;

@@ -1,7 +1,6 @@
 package com.vinctor.handler;
 
 import com.android.build.api.transform.TransformInvocation;
-import com.vinctor.Log;
 import com.vinctor.replace.ReplaceConfig;
 import com.vinctor.trace.TraceConfig;
 import com.vinctor.UatuConfig;
@@ -47,21 +46,18 @@ public class TransformHandler extends BaseHanlder {
         ClassReader cr = new ClassReader(bytes);
         ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
         ClassVisitor upstreamCv = cw;
-        Log.i("chain:" + upstreamCv);
         TraceConfig traceConfig = config.getTraceConfig();
         boolean isTraceAllowjar = isJar ? (traceConfig.isJarEnable()) : true;
         if (traceConfig != null && traceConfig.isEnable() && isTraceAllowjar) {
             ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, context);
             upstreamCv = traceCv;
         }
-        Log.i("chain:" + upstreamCv);
         ReplaceConfig replaceConfig = config.getReplaceConfig();
         boolean isReplaceAllowjar = isJar ? (replaceConfig.isJarEnable()) : true;
         if (replaceConfig != null && replaceConfig.isEnable() && isReplaceAllowjar) {
             ClassVisitor replaceCv = new ReplaceClassVisitor(upstreamCv, context);
             upstreamCv = replaceCv;
         }
-        Log.i("chain:" + upstreamCv);
         cr.accept(upstreamCv, ClassReader.EXPAND_FRAMES);
 
         byte[] code = cw.toByteArray();

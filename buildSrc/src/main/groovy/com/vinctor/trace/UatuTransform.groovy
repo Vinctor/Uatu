@@ -2,7 +2,7 @@ package com.vinctor.trace
 
 import com.android.build.api.transform.*
 import com.android.build.gradle.internal.pipeline.TransformManager
-import com.vinctor.Log
+import com.vinctor.log.Log
 import com.vinctor.UatuConfig
 import com.vinctor.UatuContext
 import com.vinctor.graph.ClassGraphVisitor
@@ -58,7 +58,7 @@ class UatuTransform extends Transform {
         config.traceConfig = project.traceConfig;
         config.replaceConfig = project.replaceConfig;
         config.init()
-        System.println(config.toString())
+        Log.e(config.toString())
         Collection<TransformInput> inputs = transformInvocation.getInputs();
         TransformOutputProvider outputProvider = transformInvocation.getOutputProvider();
         if (outputProvider != null) {

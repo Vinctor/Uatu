@@ -1,6 +1,6 @@
 package com.vinctor.replace;
 
-import com.vinctor.Log;
+import com.vinctor.log.Log;
 import com.vinctor.graph.ClassNode;
 import com.vinctor.graph.ClassNodeGraph;
 
