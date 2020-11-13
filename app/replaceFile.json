@@ -66,7 +66,7 @@
     },
     "to": {
       "className": "com.vinctor.Trace",
-      "method": "com.vinctor.Trace getTrace(com.vinctor.Uatu.BaseView,Lcom.vinctor.MyTextUtils)"
+      "method": "com.vinctor.Trace getTrace(com.vinctor.Uatu.BaseView,com.vinctor.MyTextUtils)"
     }
   },
   {
@@ -78,7 +78,7 @@
     },
     "to": {
       "className": "com.vinctor.Trace",
-      "method": "void getArray(com.vinctor.Uatu.BaseView,Ljava.lang.String[][])"
+      "method": "void getArray(com.vinctor.Uatu.BaseView,java.lang.String[][])"
     }
   }
 ]

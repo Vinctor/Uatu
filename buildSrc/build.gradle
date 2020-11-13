@@ -6,7 +6,7 @@ dependencies {
     implementation gradleApi()
     implementation localGroovy()
     implementation "com.android.tools.build:gradle:3.3.2"
-    implementation "org.ow2.asm:asm-all:5.1"
+    implementation "org.ow2.asm:asm:9.0"
 }
 
 repositories {
@@ -43,8 +43,32 @@ publish {
     artifactId = 'uatu'
     userOrg = 'xcht1209'
     groupId = 'com.vinctor.plugin'
-    publishVersion = '0.2.2'
+    publishVersion = '0.2.4'
     website = 'https://github.com/Vinctor'
     licences = ['Apache-2.0']
     desc = 'trace mothod'
+}
+
+// 定义pom文件参数
+def groupIdDefined = "com.vinctor.plugin"
+def artifactIdDefined = "uatu"
+def versionDefined = "0.2.4"
+
+task createPom {
+    doLast {
+        pom {
+            project {
+                groupId "${groupIdDefined}"
+                artifactId "${artifactIdDefined}"
+                version "${versionDefined}"
+                packaging "aar"
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+            }
+        }.writeTo("$libsDir/${artifactIdDefined}-${versionDefined}.pom")
+    }
 }

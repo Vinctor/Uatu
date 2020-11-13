@@ -32,7 +32,7 @@ public class ReplaceClassVisitor extends BaseClassVisitor {
     private boolean isCanGenarate;
 
     public ReplaceClassVisitor(ClassVisitor cv, UatuContext context) {
-        super(Opcodes.ASM5, cv, context);
+        super(Opcodes.ASM6, cv, context);
         this.config = context.getConfig().getReplaceConfig();
     }
 
@@ -57,7 +57,7 @@ public class ReplaceClassVisitor extends BaseClassVisitor {
         if (!isNeedReplace) {
             return methodVisitor;
         }
-        return new ReplaceMethodVisitor(Opcodes.ASM5, methodVisitor, access, name, desc, config, methodNodes, cv,className);
+        return new ReplaceMethodVisitor(Opcodes.ASM6, methodVisitor, access, name, desc, config, methodNodes, cv,className);
     }
 
     @Override

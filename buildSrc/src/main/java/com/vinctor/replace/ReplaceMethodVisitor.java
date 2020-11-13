@@ -107,7 +107,7 @@ public class ReplaceMethodVisitor extends GeneratorAdapter {
             methodVisitor = new GeneratorAdapter(Opcodes.ACC_PRIVATE + Opcodes.ACC_FINAL + Opcodes.ACC_STATIC, m, null, null, cv);
             methodVisitor.visitCode();
             methodVisitor.loadArg(0);
-            methodVisitor.instanceOf(Type.getType(from.className));
+            methodVisitor.instanceOf(Type.getObjectType(from.className));
             Label elseLabel = methodVisitor.newLabel();
             methodVisitor.ifZCmp(EQ, elseLabel);
             methodVisitor.loadArgs();

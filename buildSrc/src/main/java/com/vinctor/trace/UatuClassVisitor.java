@@ -18,7 +18,7 @@ public class UatuClassVisitor extends BaseClassVisitor {
     private boolean isTrace = false;
 
     public UatuClassVisitor(ClassVisitor cv, UatuContext context) {
-        super(Opcodes.ASM5, cv, context);
+        super(Opcodes.ASM6, cv, context);
         this.config = context.getConfig().getTraceConfig();
     }
 
@@ -65,6 +65,6 @@ public class UatuClassVisitor extends BaseClassVisitor {
             return methodVisitor;
         }
         Log.i(className + "--" + name + " is changing...");
-        return new TraceMethodVisitor(Opcodes.ASM5, methodVisitor, className, access, name, desc, config);
+        return new TraceMethodVisitor(Opcodes.ASM6, methodVisitor, className, access, name, desc, config);
     }
 }

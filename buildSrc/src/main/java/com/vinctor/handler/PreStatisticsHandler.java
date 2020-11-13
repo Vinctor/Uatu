@@ -23,7 +23,7 @@ public class PreStatisticsHandler extends BaseHanlder {
 
     private void statistics(byte[] bytes) {
         ClassReader cr = new ClassReader(bytes);
-        ClassGraphVisitor cv = new ClassGraphVisitor(Opcodes.ASM5);
+        ClassGraphVisitor cv = new ClassGraphVisitor(Opcodes.ASM6);
         cr.accept(cv, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
     }
 

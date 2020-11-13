@@ -88,7 +88,7 @@ public class Trace {
         return null;
     }
 
-    void getArray(BaseView baseView, String[][] a) {
+    public static void getArray(BaseView baseView, String[][] a) {
 
     }
 }

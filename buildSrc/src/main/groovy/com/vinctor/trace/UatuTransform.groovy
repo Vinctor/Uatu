@@ -195,7 +195,7 @@ class UatuTransform extends Transform {
                             if (name.endsWith(".class") && !name.startsWith("R\$") &&
                                     !"R.class".equals(name) && !"BuildConfig.class".equals(name)) {
                                 ClassReader cr = new ClassReader(file.bytes)
-                                ClassGraphVisitor cv = new ClassGraphVisitor(Opcodes.ASM5);
+                                ClassGraphVisitor cv = new ClassGraphVisitor(Opcodes.ASM6);
                                 cr.accept(cv, ClassReader.SKIP_CODE | ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
                             }
                         }
