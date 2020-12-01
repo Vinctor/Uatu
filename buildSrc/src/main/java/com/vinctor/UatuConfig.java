@@ -12,8 +12,8 @@ public class UatuConfig {
 
     boolean enable = false;
 
-    TraceConfig traceConfig;
-    ReplaceConfig replaceConfig;
+    public TraceConfig traceConfig;
+    public ReplaceConfig replaceConfig;
 
 
     public UatuConfig(Project project) {
@@ -21,7 +21,7 @@ public class UatuConfig {
         project.getExtensions().create("replaceConfig", ReplaceConfig.class, project);
     }
 
-    void init() {
+    public void init() {
         boolean isRepplaceEnable = false;
         boolean isTraceEnable = false;
         List<String> replaceExcluedClass = new ArrayList<>();
@@ -32,7 +32,8 @@ public class UatuConfig {
             replaceExcluedClass.addAll(replaceConfig.getNeedToExclude());
         }
         if (traceConfig != null) {
-            traceConfig.addReplaceExcluedClass(replaceExcluedClass);
+            traceConfig.addReplaceExcluedClasses(replaceExcluedClass);
+            traceConfig.addReplaceExcluedClass(TraceConfig.DEFAULT_TRACE_CLASS);
             traceConfig.init(enable);
             isTraceEnable = traceConfig.isEnable();
         }

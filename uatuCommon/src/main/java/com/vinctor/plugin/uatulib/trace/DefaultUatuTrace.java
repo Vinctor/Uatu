@@ -1,16 +1,13 @@
-package com.vinctor;
+package com.vinctor.plugin.uatulib.trace;
 
 import android.os.Looper;
 import android.util.Log;
 
-import com.vinctor.Uatu.BaseView;
-import com.vinctor.Uatu.MainActivity;
-import com.vinctor.plugin.uatulib.trace.DefaultUatuTrace;
-
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Trace extends DefaultUatuTrace {
+public class DefaultUatuTrace implements ITraceListener {
+    public static final String TAG = "UatuTraceDefaultLog";
     static ConcurrentHashMap<String, Long> tsMap = new ConcurrentHashMap();
 
     /**
@@ -28,7 +25,7 @@ public class Trace extends DefaultUatuTrace {
         tsMap.put(id, startTs);
         Thread thread = Thread.currentThread();
         boolean isMainLooper = Looper.myLooper() == Looper.getMainLooper();
-        Log.d("MethodTrace_start", getStartLog(className, method, signature, args, thread, isMainLooper));
+        Log.d(TAG, getStartLog(className, method, signature, args, thread, isMainLooper));
         return id;
     }
 
@@ -40,7 +37,7 @@ public class Trace extends DefaultUatuTrace {
             cost = endTs - startTs;
         }
         tsMap.remove(id);
-        Log.d("MethodTrace_end", getEndLog(className, method, cost, returnObj));
+        Log.d(TAG, getEndLog(className, method, cost, returnObj));
     }
 
     private static String getEndLog(String className, String method, long cost, Object returnObj) {
@@ -65,29 +62,5 @@ public class Trace extends DefaultUatuTrace {
             sb.append(",");
         }
         return sb.toString();
-    }
-
-    public static void log(MainActivity activity, String msg) {
-        activity.log(msg);
-    }
-
-    public static void printStackTrace(Throwable throwable) {
-        throwable.printStackTrace();
-    }
-
-    public static void onCreate(BaseView baseView) {
-        baseView.onCreate();
-    }
-
-    public static boolean isCorrect(BaseView baseView) {
-        return baseView.isCorrect();
-    }
-
-    public static Trace getTrace(BaseView baseView, MyTextUtils myTextUtils) {
-        return null;
-    }
-
-    public static void getArray(BaseView baseView, String[][] a) {
-
     }
 }

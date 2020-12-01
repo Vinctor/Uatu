@@ -1,1 +1,1 @@
-include ':app', ':buildSrc', /*':UatuTraceShow',*/ ':uatuCommon',':testbasemoudle'
+include ':app', ':buildSrc', /*':UatuTraceShow',*/ ':uatuCommon'

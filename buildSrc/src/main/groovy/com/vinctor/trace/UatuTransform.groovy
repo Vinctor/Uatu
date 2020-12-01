@@ -58,7 +58,6 @@ class UatuTransform extends Transform {
         config.traceConfig = project.traceConfig;
         config.replaceConfig = project.replaceConfig;
         config.init()
-        Log.e(config.toString())
         Collection<TransformInput> inputs = transformInvocation.getInputs();
         TransformOutputProvider outputProvider = transformInvocation.getOutputProvider();
         if (outputProvider != null) {
@@ -67,40 +66,11 @@ class UatuTransform extends Transform {
         context = new UatuContext(config)
 
         PreStatisticsHandler.start(transformInvocation);
+        String traceClass = TraceConfig.getTraceClassFromGraph(config.traceConfig);
+        config.traceConfig.setTraceClass(traceClass);
+        Log.e(config.toString())
         TransformHandler.start(transformInvocation, config, context);
 
-        /*hanlderPreParse(inputs)
-
-        inputs.each { TransformInput input ->
-
-            input.directoryInputs.each {
-                DirectoryInput directoryInput ->
-
-                    handlerFile(directoryInput)
-
-                    def dest = outputProvider.getContentLocation(directoryInput.name,
-                            directoryInput.contentTypes, directoryInput.scopes,
-                            Format.DIRECTORY)
-                    FileUtils.copyDirectory(directoryInput.file, dest)
-            }
-
-            input.jarInputs.each { JarInput jarInput ->
-                if (!jarInput.file.getAbsolutePath().endsWith(".jar")) {
-                    return
-                }
-                def jarName = jarInput.name
-                def md5Name = DigestUtils.md5Hex(jarInput.file.getAbsolutePath())
-                if (jarName.endsWith(".jar")) {
-                    jarName = jarName.substring(0, jarName.length() - 4)
-                }
-                File tmpFile = handlerJar(jarInput)
-
-                def dest = outputProvider.getContentLocation(jarName + md5Name,
-                        jarInput.contentTypes, jarInput.scopes, Format.JAR)
-                FileUtils.copyFile(tmpFile, dest)
-                tmpFile.delete()
-            }
-        }*/
     }
 
     File handlerJar(JarInput jarInput) {
@@ -174,7 +144,7 @@ class UatuTransform extends Transform {
         }
         Log.i("chain:" + upstreamCv)
         if (config.traceConfig != null && config.traceConfig.enable) {
-            ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, context)
+            ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, context, isClassInJar)
             upstreamCv = traceCv;
         }
         Log.i("chain:" + upstreamCv)

@@ -51,10 +51,10 @@ public class ReplaceConfig {
             this.enable = false;
         }
         if (!exists) {
-            Log.e(TAG, configFile.getAbsolutePath() + "文件不存在");
+            Log.e(TAG, configFile.getAbsolutePath() + " file isn't exist!");
         }
         if (!canRead) {
-            Log.e(TAG, configFile.getAbsolutePath() + "文件不可读");
+            Log.e(TAG, configFile.getAbsolutePath() + " file can't read!");
         }
     }
 
@@ -62,7 +62,7 @@ public class ReplaceConfig {
         String jsonString = Utils.readJsonFile(configFile);
         if (TextUtils.isEmpty(jsonString)) {
             this.enable = false;
-            Log.e(TAG, configFile.getAbsolutePath() + "读取失败");
+            Log.e(TAG, configFile.getAbsolutePath() + " read fail!");
             return;
         }
         try {
@@ -70,7 +70,7 @@ public class ReplaceConfig {
             }.getType());
             if (replaceList == null || replaceList.size() == 0) {
                 this.enable = false;
-                Log.e(TAG, configFile.getAbsolutePath() + "无转换数据");
+                Log.e(TAG, configFile.getAbsolutePath() + " data is empty!");
                 return;
             }
             needToExclude.clear();
@@ -84,12 +84,12 @@ public class ReplaceConfig {
                 ReplaceBean.MethodBean from = bean.from;
                 ReplaceBean.MethodBean to = bean.to;
                 if (from == null || to == null) {
-                    Log.e(TAG, bean.desc + "，from或to为null，已移除");
+                    Log.e(TAG, bean.desc + "，from or to is null,remove!");
                     iterator.remove();
                     continue;
                 }
                 if (!from.validate() || !to.validate()) {
-                    Log.e(TAG, bean.desc + "，数据格式错误，已移除");
+                    Log.e(TAG, bean.desc + "，data is error，remove!");
                     iterator.remove();
                     continue;
                 }
@@ -108,11 +108,11 @@ public class ReplaceConfig {
                     int toArgsLength = toMethodType.getArgumentTypes().length;
                     if (fromArgsLength != toArgsLength && fromArgsLength + 1 != toArgsLength) {
                         iterator.remove();
-                        Log.e(TAG, bean.desc + "方法描述不正确，已移除,from:" + fromArgsLength + ",to:" + toArgsLength);
+                        Log.e(TAG, bean.desc + "method desc is error，remove,from:" + fromArgsLength + ",to:" + toArgsLength);
                         continue;
                     }
                 } catch (Exception e) {
-                    Log.e(TAG, configFile.getAbsolutePath() + ",转换json失败");
+                    Log.e(TAG, configFile.getAbsolutePath() + ",parse json fail!");
                     e.printStackTrace();
                     iterator.remove();
                     continue;
@@ -122,7 +122,7 @@ public class ReplaceConfig {
             }
         } catch (Exception e) {
             this.enable = false;
-            Log.e(TAG, configFile.getAbsolutePath() + ",转换json失败");
+            Log.e(TAG, configFile.getAbsolutePath() + ",parse json fail!");
             e.printStackTrace();
             throw e;
         }

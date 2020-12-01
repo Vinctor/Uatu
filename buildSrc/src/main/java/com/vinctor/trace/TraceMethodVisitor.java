@@ -6,13 +6,23 @@ import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 import org.objectweb.asm.Type;
 import org.objectweb.asm.commons.AdviceAdapter;
+import org.objectweb.asm.commons.Method;
 
 
 public class TraceMethodVisitor extends AdviceAdapter {
 
 
     public final static String OBJECT_SIGNATURE = Type.getDescriptor(Object.class);
-    private final static String OBJECT_ARRAY_SIGNATURE = "[Ljava/lang/Object;";
+    static Type ARRAY_OBJ_TYPE = Type.getType(Object[].class);
+    static Type OBJ_TYPE = Type.getType(Object.class);
+    static Type STRING_TYPE = Type.getType(String.class);
+
+
+    static Type TRACT_CLASS_TYPE = Type.getObjectType(TraceConfig.TRACE_CLASS_INTERFACE);
+    static Type TRACT_UTIL_CLASS_TYPE = Type.getObjectType(TraceConfig.TRACE_UTIL_CLASS_NAME);
+    static Method METHOD_GET_INTANCE = Method.getMethod(TraceConfig.TRACE_CLASS_INTERFACE.replace('/', '.') + " " + TraceConfig.GET_TRACE_CLASS_INTANCE_METHOD_NAME + "()");
+    static Method METHOD_TRACE_START = new Method("start", STRING_TYPE, new Type[]{STRING_TYPE, STRING_TYPE, STRING_TYPE, ARRAY_OBJ_TYPE});
+    static Method METHOD_TRACE_END = new Method("end", Type.VOID_TYPE, new Type[]{STRING_TYPE, STRING_TYPE, STRING_TYPE, STRING_TYPE, OBJ_TYPE});
 
     private final String className;
     private final String desc;
@@ -24,6 +34,7 @@ public class TraceMethodVisitor extends AdviceAdapter {
     String stringDesc = Type.getType(String.class).getDescriptor();
     private int methodIdLocalIndex;
     private boolean isLog;
+    private int traceClassLocalIndex;
 
     protected TraceMethodVisitor(int api, MethodVisitor mv, String className, int access, String name, String desc, TraceConfig config) {
         super(api, mv, access, name, desc);
@@ -32,7 +43,7 @@ public class TraceMethodVisitor extends AdviceAdapter {
         this.desc = desc;
         this.config = config;
         this.isLog = config.logAllArgs;
-        this.traceClass = config.traceClass;
+        this.traceClass = config.getTraceClass();
         this.argumentArrays = Type.getArgumentTypes(desc);
         this.isStatic = (access & Opcodes.ACC_STATIC) != 0;
     }
@@ -42,10 +53,6 @@ public class TraceMethodVisitor extends AdviceAdapter {
         if (isLog) {
             this.isLog = true;
             return super.visitAnnotation(s, b);
-        }
-        if ("Lcom/vinctor/plugin/uatulib/TraceLog;".equals(s)) {
-            this.isLog = true;
-            return null;
         }
         return super.visitAnnotation(s, b);
     }
@@ -57,12 +64,16 @@ public class TraceMethodVisitor extends AdviceAdapter {
 
     @Override
     protected void onMethodEnter() {
+        //get trace class
+        invokeStatic(TRACT_UTIL_CLASS_TYPE, METHOD_GET_INTANCE);
+        traceClassLocalIndex = newLocal(TRACT_CLASS_TYPE);
+        storeLocal(traceClassLocalIndex);
+        loadLocal(traceClassLocalIndex);
 
-        methodIdLocalIndex = newLocal(Type.getType(String.class));
-        mv.visitLdcInsn(className);
-        mv.visitLdcInsn(methodName);
-        mv.visitLdcInsn(getParseSignature());
-
+        //start method
+        push(className);
+        push(methodName);
+        push(getParseSignature());
         //args
         if (isLog) {
             loadArgArray();
@@ -70,13 +81,8 @@ public class TraceMethodVisitor extends AdviceAdapter {
             push(0);
             newArray(Type.getType(Object.class));
         }
-
-        mv.visitMethodInsn(
-                INVOKESTATIC,
-                traceClass,
-                "start",
-                "(" + stringDesc + stringDesc + stringDesc + OBJECT_ARRAY_SIGNATURE + ")" + stringDesc,
-                false);
+        methodIdLocalIndex = newLocal(Type.getType(String.class));
+        invokeInterface(TRACT_CLASS_TYPE, METHOD_TRACE_START);
         storeLocal(methodIdLocalIndex);
     }
 
@@ -117,17 +123,15 @@ public class TraceMethodVisitor extends AdviceAdapter {
         }
         storeLocal(returnLocalIndex);
 
+        //load trace class
+        loadLocal(traceClassLocalIndex);
+        //load method id
         loadLocal(methodIdLocalIndex);
-        mv.visitLdcInsn(className);
-        mv.visitLdcInsn(methodName);
-        mv.visitLdcInsn(getParseSignature());
+        push(className);
+        push(methodName);
+        push(getParseSignature());
         loadLocal(returnLocalIndex);
 
-        mv.visitMethodInsn(
-                INVOKESTATIC,
-                traceClass,
-                "end",
-                "(" + stringDesc + stringDesc + stringDesc + stringDesc + OBJECT_SIGNATURE + ")V",
-                false);
+        invokeInterface(TRACT_CLASS_TYPE, METHOD_TRACE_END);
     }
 }

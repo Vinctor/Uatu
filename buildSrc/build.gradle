@@ -32,7 +32,7 @@ uploadArchives {
         mavenDeployer {
             pom.groupId = 'com.vinctor.plugin'
             pom.artifactId = 'uatu'
-            pom.version = 1.0
+            pom.version = 3.0
             // maven本地仓库的目录
             repository(url: uri('../repo'))
         }
@@ -43,7 +43,7 @@ publish {
     artifactId = 'uatu'
     userOrg = 'xcht1209'
     groupId = 'com.vinctor.plugin'
-    publishVersion = '0.2.4'
+    publishVersion = '0.3.0'
     website = 'https://github.com/Vinctor'
     licences = ['Apache-2.0']
     desc = 'trace mothod'

@@ -1,5 +1,7 @@
 package com.vinctor.graph;
 
+import com.vinctor.util.TypeUtil;
+
 import org.objectweb.asm.ClassVisitor;
 
 public class ClassGraphVisitor extends ClassVisitor {
@@ -16,6 +18,8 @@ public class ClassGraphVisitor extends ClassVisitor {
         if (classNode == null) {
             classNode = new ClassNode(name);
         }
-        classNode.setParent(superName).setInterfaces(interfaces);
+        boolean isAbs = TypeUtil.isAbstract(access);
+        boolean isInterface = TypeUtil.isInterface(access);
+        classNode.setAbs(isAbs).setInterface(isInterface).setParent(superName).setInterfaces(interfaces);
     }
 }

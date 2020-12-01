@@ -10,7 +10,6 @@ import com.vinctor.TestHook;
 import com.vinctor.Trace;
 import com.vinctor.Uatu.test.Test;
 import com.vinctor.Uatu.test.TestExclude;
-import com.vinctor.plugin.uatulib.TraceLog;
 
 import org.w3c.dom.Text;
 

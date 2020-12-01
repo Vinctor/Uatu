@@ -4,16 +4,15 @@ apply plugin: com.vinctor.trace.UatuPlugin
 UatuConfig {
     enable = true
     traceConfig {
-        enable = false
+        enable = true
         jarEnable = false
         logAllArgs = true
-        traceClass = 'com.vinctor.Trace'
         tracePackage = ['com.vinctor', 'com.example.testbasemoudle']
         exclude = ['com.vinctor.Uatu.test.TestExclude']
     }
 
     replaceConfig {
-        enable = true
+        enable = false
         jarEnable = false
         configFile = "replaceFile.json"
     }
@@ -40,8 +39,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation project(path: ':testbasemoudle')
-    //implementation project(path: ':uatuCommon')
+    implementation project(path: ':uatuCommon')
 }
 //gradlew --no-daemon -Dorg.gradle.debug=true :app:assembleRelease
 

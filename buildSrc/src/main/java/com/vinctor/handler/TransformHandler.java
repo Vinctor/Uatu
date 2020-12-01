@@ -42,18 +42,17 @@ public class TransformHandler extends BaseHanlder {
     }
 
 
-    byte[] handlerClass(byte[] bytes, boolean isJar) {
+    byte[] handlerClass(byte[] bytes, boolean isClassInJar) {
         ClassReader cr = new ClassReader(bytes);
         ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
         ClassVisitor upstreamCv = cw;
         TraceConfig traceConfig = config.getTraceConfig();
-        boolean isTraceAllowjar = isJar ? (traceConfig.isJarEnable()) : true;
-        if (traceConfig != null && traceConfig.isEnable() && isTraceAllowjar) {
-            ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, context);
+        if (traceConfig != null && traceConfig.isEnable()) {
+            ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, context,isClassInJar);
             upstreamCv = traceCv;
         }
         ReplaceConfig replaceConfig = config.getReplaceConfig();
-        boolean isReplaceAllowjar = isJar ? (replaceConfig.isJarEnable()) : true;
+        boolean isReplaceAllowjar = isClassInJar ? (replaceConfig.isJarEnable()) : true;
         if (replaceConfig != null && replaceConfig.isEnable() && isReplaceAllowjar) {
             ClassVisitor replaceCv = new ReplaceClassVisitor(upstreamCv, context);
             upstreamCv = replaceCv;

@@ -1,5 +1,6 @@
 package com.vinctor.graph;
 
+import com.vinctor.log.Log;
 import com.vinctor.util.NodeUtil;
 
 import org.apache.http.util.TextUtils;
@@ -8,20 +9,39 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ClassNode {
-    public final static int CLASS = 1;
-    public final static int ABSTRACT_CLASS = 2;
-    public final static int INTERFACE = 3;
 
-    int type = -1;
+    boolean isAbs = false;
+    boolean isInterface = false;
     public String name;
     ClassNode parent;
     HashSet<ClassNode> interfaces = new HashSet<>();
     HashSet<ClassNode> children = new HashSet<>();
 
     public ClassNode(String name) {
-        this.type = type;
+        this(name, false, false);
+    }
+
+    public ClassNode(String name, boolean isAbs, boolean isInterface) {
         this.name = parseClassName(name);
         addToGraph(this);
+    }
+
+    public ClassNode setAbs(boolean abs) {
+        isAbs = abs;
+        return this;
+    }
+
+    public ClassNode setInterface(boolean anInterface) {
+        isInterface = anInterface;
+        return this;
+    }
+
+    public boolean isAbs() {
+        return isAbs;
+    }
+
+    public boolean isInterface() {
+        return isInterface;
     }
 
     public String getName() {
@@ -67,7 +87,7 @@ public class ClassNode {
         if (TextUtils.isEmpty(interfaceName)) return this;
         ClassNode interfaceClass = ClassNodeGraph.getClassNode(interfaceName);
         if (interfaceClass == null) {
-            interfaceClass = new ClassNode(interfaceName);
+            interfaceClass = new ClassNode(interfaceName, false, true);
         }
         interfaces.add(interfaceClass);
         interfaceClass.addChild(this);
@@ -105,6 +125,12 @@ public class ClassNode {
         return set;
     }
 
+    public Set<ClassNode> getAllLeafChilren() {
+        Set<ClassNode> set = new HashSet<>();
+        NodeUtil.getAllLeafChilren(this, set);
+        return set;
+    }
+
     @Override
     public int hashCode() {
         return name.hashCode();
@@ -120,6 +146,8 @@ public class ClassNode {
     @Override
     public String toString() {
         return "ClassNode{" +
+                "isAbs=" + isAbs +
+                ", isInterface=" + isInterface +
                 ", name='" + name + '\'' +
                 ", parent=" + (parent == null ? "" : parent.name) +
                 ", interfaces=" + interfaces.size() +
