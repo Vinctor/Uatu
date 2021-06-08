@@ -18,8 +18,8 @@ UatuConfig {
     }
 }
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.2"
+    compileSdkVersion rootProject.compileSdkVersion
+    buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "com.vinctor.Uatu"
         minSdkVersion 15
