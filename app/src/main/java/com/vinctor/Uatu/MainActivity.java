@@ -2,16 +2,12 @@ package com.vinctor.Uatu;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.text.TextUtils;
-import android.util.Log;
 
 import com.vinctor.MyTextUtils;
 import com.vinctor.TestHook;
 import com.vinctor.Trace;
 import com.vinctor.Uatu.test.Test;
 import com.vinctor.Uatu.test.TestExclude;
-
-import org.w3c.dom.Text;
 
 public class MainActivity extends Activity implements BaseView, Runnable {
 
@@ -116,3 +112,4 @@ public class MainActivity extends Activity implements BaseView, Runnable {
 
     }
 }
+// test

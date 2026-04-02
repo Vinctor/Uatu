@@ -1,0 +1,51 @@
+/**
+ * Uatu 插件条件应用脚本
+ * 
+ * 功能：
+ * - Release 构建时自动跳过插件
+ * - Debug 构建时正常启用
+ * - 支持通过 Gradle 属性强制控制
+ * 
+ * 使用方法：
+ * 1. 将此文件复制到 app 模块目录
+ * 2. 在 app/build.gradle 中添加: apply from: 'applyUatu.gradle'
+ * 3. 根据需要修改下方的 tracePackage 配置
+ */
+
+// 判断是否为 Release 构建
+def isReleaseBuild = gradle.startParameter.taskNames.any {
+    it.toLowerCase().contains('release')
+}
+
+// 支持通过 gradle 属性强制控制: -Puatu.enable=false
+def forceDisable = project.hasProperty('uatu.enable') && 
+                   project.property('uatu.enable') == 'false'
+
+// 只在非 Release 且未强制禁用时应用插件
+if (!isReleaseBuild && !forceDisable) {
+    apply plugin: 'uatu'
+    
+    UatuConfig {
+        enable = true
+        
+        traceConfig {
+            enable = true
+            jarEnable = false
+            logAllArgs = true
+            // TODO: 配置需要追踪的包名
+            tracePackage = ['com.your.package']
+            // 排除不需要追踪的类
+            exclude = []
+        }
+        
+        replaceConfig {
+            enable = false
+            jarEnable = false
+            configFile = "replaceFile.json"
+        }
+    }
+    
+    println "[Uatu] Plugin applied for debug build"
+} else {
+    println "[Uatu] Plugin skipped (release=${isReleaseBuild}, forceDisable=${forceDisable})"
+}

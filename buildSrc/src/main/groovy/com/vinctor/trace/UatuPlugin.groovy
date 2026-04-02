@@ -9,15 +9,16 @@ public class UatuPlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
 
-        project.configurations.all { configuration ->
-            def name = configuration.name
-            //System.out.println("this configuration is ${name}")
-            if (name == "implementation") {
-                configuration.dependencies.add(project.dependencies.create("com.vinctor.plugin:uatuCommon:0.1.8"))
-            }
-        }
+        // 注释掉自动添加依赖，由用户在 build.gradle 中显式添加
+        // 避免与本地项目依赖冲突
+         project.configurations.all { configuration ->
+             def name = configuration.name
+             if (name == "implementation") {
+                 configuration.dependencies.add(project.dependencies.create("com.yuanfudao.android:uatuCommon:0.0.3"))
+             }
+         }
 
-        project.extensions.create("UatuConfig", UatuConfig.class,project)
+        project.extensions.create("UatuConfig", UatuConfig.class, project)
 
         def android = project.extensions.getByType(AppExtension.class)
         android.registerTransform(new UatuTransform(project))

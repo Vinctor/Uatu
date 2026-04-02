@@ -6,9 +6,9 @@ import android.util.Log;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class DefaultUatuTrace implements ITraceListener {
+public class DefaultUatuTrace {
     public static final String TAG = "UatuTraceDefaultLog";
-    static ConcurrentHashMap<String, Long> tsMap = new ConcurrentHashMap();
+    static ConcurrentHashMap<Object, Long> tsMap = new ConcurrentHashMap<>();
 
     /**
      * 当一个方法进入时会调用
@@ -17,9 +17,9 @@ public class DefaultUatuTrace implements ITraceListener {
      * @param method    被跟踪的方法名
      * @param signature 被跟踪的方法描述
      * @param args      被跟踪的方法参数
-     * @return 用来识别方法唯一标识, randomUUID, 或int累加
+     * @return 用来识别方法唯一标识, 可以是任意类型: String(UUID), Integer(自增), Long(时间戳)等
      */
-    public String start(final String className, final String method, final String signature, Object[] args) {
+    public Object start(final String className, final String method, final String signature, Object[] args) {
         long startTs = System.currentTimeMillis();
         String id = UUID.randomUUID().toString();
         tsMap.put(id, startTs);
@@ -29,7 +29,7 @@ public class DefaultUatuTrace implements ITraceListener {
         return id;
     }
 
-    public void end(String id, final String className, final String method, final String signature, final Object returnObj) {
+    public void end(Object id, final String className, final String method, final String signature, final Object returnObj) {
         long endTs = System.currentTimeMillis();
         Long startTs = tsMap.get(id);
         long cost = 0;

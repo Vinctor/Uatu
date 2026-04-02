@@ -18,6 +18,7 @@ import java.util.Set;
 public class UatuClassVisitor extends BaseClassVisitor {
     public static final String TRACT_INTERFACE_DESC = "L" + TraceConfig.TRACE_CLASS_INTERFACE + ";";
     public static final String TRACT_GET_INTANCT_METHOD_DESC = "()" + TRACT_INTERFACE_DESC;
+    private static final String INSTANCE_FIELD_NAME = "sInstance";
 
     private final TraceConfig config;
     private final boolean isClassInJar;
@@ -29,7 +30,7 @@ public class UatuClassVisitor extends BaseClassVisitor {
     private boolean isHasGenerateInstanceMethod = false;
 
     public UatuClassVisitor(ClassVisitor cv, UatuContext context, boolean isClassInJar) {
-        super(Opcodes.ASM6, cv, context);
+        super(Opcodes.ASM9, cv, context);
         this.config = context.getConfig().getTraceConfig();
         this.isClassInJar = isClassInJar;
         isJarEnable = config.isJarEnable();
@@ -95,27 +96,73 @@ public class UatuClassVisitor extends BaseClassVisitor {
             return methodVisitor;
         }
         Log.i(className + "--" + name + " is changing...");
-        return new TraceMethodVisitor(Opcodes.ASM6, methodVisitor, className, access, name, desc, config);
+        return new TraceMethodVisitor(Opcodes.ASM9, methodVisitor, className, access, name, desc, config);
     }
 
     @Override
     public void visitEnd() {
         if (isSpecialTraceUtilClass && !isHasGenerateInstanceMethod) {
-            Method method = new Method(TraceConfig.GET_TRACE_CLASS_INTANCE_METHOD_NAME, Type.getReturnType(TRACT_GET_INTANCT_METHOD_DESC), Type.getArgumentTypes(TRACT_GET_INTANCT_METHOD_DESC));
-            GeneratorAdapter methodVisitor = new GeneratorAdapter(Opcodes.ACC_PUBLIC + Opcodes.ACC_FINAL + Opcodes.ACC_STATIC, method, null, null, cv);
-            genarateIntanceMethod(methodVisitor);
+            generateTraceUtilSingleton();
         }
         super.visitEnd();
     }
 
-    private void genarateIntanceMethod(GeneratorAdapter methodVisitor) {
-        methodVisitor.visitCode();
+    /**
+     * 为 TraceUtil 类生成单例模式代码
+     * - 静态字段 sInstance
+     * - 静态初始化块 <clinit>
+     * - getIntance() 方法
+     */
+    private void generateTraceUtilSingleton() {
         Type traceClassType = Type.getObjectType(config.getTraceClass());
-        Method constructorMethod = Method.getMethod("void <init> ()");
-        methodVisitor.newInstance(traceClassType);
-        methodVisitor.dup();
-        methodVisitor.invokeConstructor(traceClassType, constructorMethod);
-        methodVisitor.returnValue();
-        methodVisitor.endMethod();
+
+        // 1. 生成字段: private static final ITraceListener sInstance;
+        cv.visitField(
+            Opcodes.ACC_PRIVATE + Opcodes.ACC_STATIC + Opcodes.ACC_FINAL,
+            INSTANCE_FIELD_NAME,
+            TRACT_INTERFACE_DESC,
+            null,
+            null
+        ).visitEnd();
+
+        // 2. 生成 <clinit>: sInstance = new xxxTrace();
+        generateStaticInitializer(traceClassType);
+
+        // 3. 生成 getIntance(): return sInstance;
+        generateGetInstanceMethod();
+    }
+
+    private void generateStaticInitializer(Type traceClassType) {
+        MethodVisitor mv = cv.visitMethod(
+            Opcodes.ACC_STATIC,
+            "<clinit>",
+            "()V",
+            null,
+            null
+        );
+        mv.visitCode();
+        mv.visitTypeInsn(Opcodes.NEW, traceClassType.getInternalName());
+        mv.visitInsn(Opcodes.DUP);
+        mv.visitMethodInsn(Opcodes.INVOKESPECIAL, traceClassType.getInternalName(), "<init>", "()V", false);
+        mv.visitFieldInsn(Opcodes.PUTSTATIC, TraceConfig.TRACE_UTIL_CLASS_NAME, INSTANCE_FIELD_NAME, TRACT_INTERFACE_DESC);
+        mv.visitInsn(Opcodes.RETURN);
+        mv.visitMaxs(2, 0);
+        mv.visitEnd();
+    }
+
+    private void generateGetInstanceMethod() {
+        Method method = new Method(
+            TraceConfig.GET_TRACE_CLASS_INTANCE_METHOD_NAME,
+            Type.getReturnType(TRACT_GET_INTANCT_METHOD_DESC),
+            Type.getArgumentTypes(TRACT_GET_INTANCT_METHOD_DESC)
+        );
+        GeneratorAdapter mv = new GeneratorAdapter(
+            Opcodes.ACC_PUBLIC + Opcodes.ACC_STATIC,
+            method, null, null, cv
+        );
+        mv.visitCode();
+        mv.visitFieldInsn(Opcodes.GETSTATIC, TraceConfig.TRACE_UTIL_CLASS_NAME, INSTANCE_FIELD_NAME, TRACT_INTERFACE_DESC);
+        mv.returnValue();
+        mv.endMethod();
     }
 }

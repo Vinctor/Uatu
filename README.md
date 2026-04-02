@@ -4,22 +4,36 @@
 
 ## 用法
 
-一:
-root project `build.gradle`中添加:
-```
-classpath "com.vinctor.plugin:uatu:<version>"
-```
-其中[![](https://api.bintray.com/packages/xcht1209/maven/uatu/images/download.svg)](https://bintray.com/xcht1209/maven/uatu/_latestVersion)
+### 一、添加依赖
 
-二:
-app module `build.gradle`中:
-
-应用:
+root project `build.gradle` 中添加:
+```groovy
+buildscript {
+    repositories {
+        mavenLocal()
+        maven { url "https://maven.zhenguanyu.com/content/repositories/snapshots" }
+        maven { url "https://maven.zhenguanyu.com/content/repositories/releases" }
+        google()
+    }
+    dependencies {
+        classpath 'com.yuanfudao.android:uatu:0.0.1-SNAPSHOT'
+    }
+}
 ```
+
+app module `build.gradle` 中添加运行时依赖:
+```groovy
+dependencies {
+    implementation 'com.yuanfudao.android:uatuCommon:0.0.1-SNAPSHOT'
+}
+```
+
+### 二、基本使用
+
+app module `build.gradle` 中应用插件:
+```groovy
 apply plugin: 'uatu'
-```
-添加配置:
-```
+
 UatuConfig {
     enable = true
     traceConfig {
@@ -36,6 +50,47 @@ UatuConfig {
     }
 }
 ```
+
+### 三、条件应用（推荐）
+
+如果你只想在 Debug 构建时启用插件，Release 构建时自动禁用，可以使用 `applyUatu.gradle` 模板：
+
+1. 将项目中的 `applyUatu.gradle` 文件复制到你的 app 模块目录
+2. 修改 app/build.gradle:
+
+```groovy
+apply plugin: 'com.android.application'
+apply from: 'applyUatu.gradle'  // 替换 apply plugin: 'uatu' 和 UatuConfig
+
+android {
+    // ... 正常配置
+}
+
+dependencies {
+    // 只在 debug 时依赖（可选优化）
+    debugImplementation 'com.yuanfudao.android:uatuCommon:0.0.1-SNAPSHOT'
+}
+```
+
+3. 修改 `applyUatu.gradle` 中的 `tracePackage` 为你需要追踪的包名
+
+#### 命令行控制
+
+```bash
+# Debug 构建 - 插件生效
+./gradlew assembleDebug
+
+# Release 构建 - 插件自动跳过
+./gradlew assembleRelease
+
+# 强制禁用（即使 debug）
+./gradlew assembleDebug -Puatu.enable=false
+```
+
+### 四、版本要求
+
+- Gradle 7.2+
+- Android Gradle Plugin 7.1+
 ## 详细说明:
 
 ```

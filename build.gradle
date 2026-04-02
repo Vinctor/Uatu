@@ -2,19 +2,20 @@
 
 buildscript {
     repositories {
-        maven {
-            url 'https://maven.aliyun.com/repository/public/'
-        }
-        mavenCentral()
-        maven { url "https://kotlin.bintray.com/kotlinx/" }
-        maven {
-            url uri('repo')
-        }
+        mavenLocal()
+        maven { url "https://maven.zhenguanyu.com/content/repositories/releases" }
+        maven { url "https://maven.zhenguanyu.com/content/repositories/snapshots" }
+//        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+//        maven { url 'https://maven.aliyun.com/repository/public' }
+        // maven { url 'https://mirrors.163.com/maven/repository/maven-public' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
+        maven { url 'https://maven.ghostscript.com/' }
+        maven { url 'https://jitpack.io' }
         google()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.1.2'
-        //classpath 'com.vinctor.plugin:uatu:1.0'
+        classpath 'com.android.tools.build:gradle:7.1.3'
+        classpath 'com.yuanfudao.android:uatu:0.0.9-SNAPSHOT'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -23,12 +24,16 @@ buildscript {
 
 allprojects {
     repositories {
+        mavenLocal()
+        maven { url "https://maven.zhenguanyu.com/content/repositories/releases" }
+        maven { url "https://maven.zhenguanyu.com/content/repositories/snapshots" }
+//        maven { url 'https://maven.aliyun.com/nexus/content/groups/public/' }
+//        maven { url 'https://maven.aliyun.com/repository/public' }
+        // maven { url 'https://mirrors.163.com/maven/repository/maven-public' }
+        maven { url 'https://repo.huaweicloud.com/repository/maven' }
+        maven { url 'https://maven.ghostscript.com/' }
+        maven { url 'https://jitpack.io' }
         google()
-        mavenCentral()
-        maven { url "https://kotlin.bintray.com/kotlinx/" }
-        maven {
-            url uri('repo')
-        }
     }
 }
 allprojects {
@@ -45,8 +50,8 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 ext {
-    compileSdkVersion = 30
-    targetSdkVersion = 29
-    minSdkVersion = 26
-    buildToolsVersion = "30.0.3"
+    compileSdkVersion = 33
+    targetSdkVersion = 33
+    minSdkVersion = 21
+    buildToolsVersion = "34.0.0"
 }

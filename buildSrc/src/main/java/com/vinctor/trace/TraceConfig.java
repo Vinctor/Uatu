@@ -67,12 +67,8 @@ public class TraceConfig {
         return jarEnable;
     }
 
-    public void addReplaceExcluedClasses(List<String> replaceExcluedClassList) {
-        excludeSet.addAll(replaceExcluedClassList);
-    }
-
-    public void addReplaceExcluedClass(String replaceExcluedClass) {
-        excludeSet.add(replaceExcluedClass);
+    public void addExcludedClass(String className) {
+        excludeSet.add(className);
     }
 
     @Override
@@ -94,25 +90,21 @@ public class TraceConfig {
 
     public static String getTraceClassFromGraph(TraceConfig traceConfig) {
         ClassNode classNode = ClassNodeGraph.getSingleton().getClassNode(TRACE_CLASS_INTERFACE);
-        String result = DEFAULT_TRACE_CLASS;
-        if (classNode != null) {
-            Set<ClassNode> allLeafChilren = classNode.getAllLeafChilren();
-            for (ClassNode node : allLeafChilren) {
-                if (node.isAbs() || node.isInterface()) {
-                    continue;
-                }
-                if (node.getName().equals(DEFAULT_TRACE_CLASS)) {
-                    continue;
-                }
-                result = node.getName();
-                while (node != null) {
-                    String name = node.getName();
-                    traceConfig.addReplaceExcluedClass(name);
-                    node = node.getParent();
-                }
-                break;
-            }
+        if (classNode == null) {
+            return null;
         }
-        return result;
+        Set<ClassNode> allLeafChilren = classNode.getAllLeafChilren();
+        for (ClassNode node : allLeafChilren) {
+            if (node.isAbs() || node.isInterface()) {
+                continue;
+            }
+            String name = node.getName();
+            while (node != null) {
+                traceConfig.addExcludedClass(node.getName());
+                node = node.getParent();
+            }
+            return name;
+        }
+        return null;
     }
 }

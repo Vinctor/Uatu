@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
-//apply plugin: 'uatu'
-apply plugin: com.vinctor.trace.UatuPlugin
+apply plugin: 'uatu'
+//apply plugin: com.vinctor.trace.UatuPlugin
 UatuConfig {
     enable = true
     traceConfig {
@@ -10,22 +10,20 @@ UatuConfig {
         tracePackage = ['com.vinctor', 'com.example.testbasemoudle']
         exclude = ['com.vinctor.Uatu.test.TestExclude']
     }
-
-    replaceConfig {
-        enable = false
-        jarEnable = false
-        configFile = "replaceFile.json"
-    }
 }
 android {
+    namespace 'com.vinctor.Uatu'
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
     defaultConfig {
         applicationId "com.vinctor.Uatu"
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
+    }
+    lint {
+        abortOnError false
     }
     buildTypes {
         release {
@@ -39,7 +37,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-    implementation project(path: ':uatuCommon')
 }
 //gradlew --no-daemon -Dorg.gradle.debug=true :app:assembleRelease
 

@@ -1,15 +1,20 @@
 apply plugin: 'com.android.library'
 
 android {
+    namespace 'com.vinctor.plugin.uatulib'
     compileSdkVersion rootProject.compileSdkVersion
     buildToolsVersion rootProject.buildToolsVersion
 
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 29
+        minSdkVersion rootProject.minSdkVersion
+        targetSdkVersion rootProject.targetSdkVersion
         versionCode 1
         versionName "1.0"
+    }
+
+    lint {
+        abortOnError false
     }
 
     buildTypes {
@@ -24,12 +29,12 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
-/*publish {
-    artifactId = "uatuCommon"
-    userOrg = 'xcht1209'
-    groupId = 'com.vinctor.plugin'
-    publishVersion = '0.3.0'
-    website = 'https://github.com/Vinctor/uatu'
-    licences = ['Apache-2.0']
-    desc = 'trace mothod'
-}*/
+
+// 发布配置
+ext {
+    PUBLISH_GROUP_ID = 'com.yuanfudao.android'
+    PUBLISH_ARTIFACT_ID = 'uatuCommon'
+    PUBLISH_VERSION = '0.0.3'
+}
+
+apply from: '../kuiperPublish.gradle'

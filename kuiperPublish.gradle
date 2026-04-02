@@ -1,0 +1,72 @@
+apply plugin: 'maven-publish'
+
+// 读取凭据
+def repoUserName = ''
+def repoUserPwd = ''
+def localPropsFile = rootProject.file('local.properties')
+if (localPropsFile.exists()) {
+    Properties localProps = new Properties()
+    localProps.load(new FileInputStream(localPropsFile))
+    repoUserName = localProps.getProperty('MAVEN_USERNAME', '')
+    repoUserPwd = localProps.getProperty('MAVEN_PASSWORD', '')
+}
+
+def snapshotUrl = "https://maven.zhenguanyu.com/content/repositories/snapshots/"
+def releaseUrl = "https://maven.zhenguanyu.com/content/repositories/releases/"
+
+afterEvaluate {
+    publishing {
+        publications {
+            maven(MavenPublication) {
+                groupId = PUBLISH_GROUP_ID
+                artifactId = PUBLISH_ARTIFACT_ID
+                version = PUBLISH_VERSION
+                
+                if (project.plugins.hasPlugin('com.android.library')) {
+                    from components.release
+                } else {
+                    from components.java
+                }
+            }
+        }
+        repositories {
+            maven {
+                name = "snapshots"
+                url = uri(snapshotUrl)
+                credentials {
+                    username = repoUserName
+                    password = repoUserPwd
+                }
+            }
+            maven {
+                name = "releases"
+                url = uri(releaseUrl)
+                credentials {
+                    username = repoUserName
+                    password = repoUserPwd
+                }
+            }
+            // 本地发布到 ~/.m2/repository
+            mavenLocal()
+        }
+    }
+    
+    // 便捷发布任务
+    tasks.register('publishLocal') {
+        group = 'publishing'
+        description = '发布到本地 Maven 仓库 (~/.m2/repository)'
+        dependsOn 'publishMavenPublicationToMavenLocal'
+    }
+    
+    tasks.register('publishSnapshot') {
+        group = 'publishing'
+        description = '发布到 Snapshot 远端仓库'
+        dependsOn 'publishMavenPublicationToSnapshotsRepository'
+    }
+    
+    tasks.register('publishRelease') {
+        group = 'publishing'
+        description = '发布到 Release 远端仓库'
+        dependsOn 'publishMavenPublicationToReleasesRepository'
+    }
+}

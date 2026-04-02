@@ -21,8 +21,8 @@ public class TraceMethodVisitor extends AdviceAdapter {
     static Type TRACT_CLASS_TYPE = Type.getObjectType(TraceConfig.TRACE_CLASS_INTERFACE);
     static Type TRACT_UTIL_CLASS_TYPE = Type.getObjectType(TraceConfig.TRACE_UTIL_CLASS_NAME);
     static Method METHOD_GET_INTANCE = Method.getMethod(TraceConfig.TRACE_CLASS_INTERFACE.replace('/', '.') + " " + TraceConfig.GET_TRACE_CLASS_INTANCE_METHOD_NAME + "()");
-    static Method METHOD_TRACE_START = new Method("start", STRING_TYPE, new Type[]{STRING_TYPE, STRING_TYPE, STRING_TYPE, ARRAY_OBJ_TYPE});
-    static Method METHOD_TRACE_END = new Method("end", Type.VOID_TYPE, new Type[]{STRING_TYPE, STRING_TYPE, STRING_TYPE, STRING_TYPE, OBJ_TYPE});
+    static Method METHOD_TRACE_START = new Method("start", OBJ_TYPE, new Type[]{STRING_TYPE, STRING_TYPE, STRING_TYPE, ARRAY_OBJ_TYPE});
+    static Method METHOD_TRACE_END = new Method("end", Type.VOID_TYPE, new Type[]{OBJ_TYPE, STRING_TYPE, STRING_TYPE, STRING_TYPE, OBJ_TYPE});
 
     private final String className;
     private final String desc;
@@ -81,7 +81,7 @@ public class TraceMethodVisitor extends AdviceAdapter {
             push(0);
             newArray(Type.getType(Object.class));
         }
-        methodIdLocalIndex = newLocal(Type.getType(String.class));
+        methodIdLocalIndex = newLocal(Type.getType(Object.class));
         invokeInterface(TRACT_CLASS_TYPE, METHOD_TRACE_START);
         storeLocal(methodIdLocalIndex);
     }

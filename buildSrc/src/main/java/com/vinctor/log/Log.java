@@ -25,6 +25,14 @@ public class Log {
         logger.i(tag, "-->" + msg);
     }
 
+    public static void w(Object msg) {
+        logger.w(TAG, msg.toString());
+    }
+
+    public static void w(String tag, Object msg) {
+        logger.w(tag, "-->" + msg);
+    }
+
     public static void e(String tag, Object msg) {
         logger.e(tag, "-->" + msg);
     }

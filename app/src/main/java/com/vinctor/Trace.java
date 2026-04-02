@@ -10,7 +10,7 @@ import com.vinctor.plugin.uatulib.trace.DefaultUatuTrace;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class Trace extends DefaultUatuTrace {
+public class Trace {
     static ConcurrentHashMap<String, Long> tsMap = new ConcurrentHashMap();
 
     /**

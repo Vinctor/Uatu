@@ -1,11 +1,9 @@
 package com.vinctor.handler;
 
 import com.android.build.api.transform.TransformInvocation;
-import com.vinctor.replace.ReplaceConfig;
 import com.vinctor.trace.TraceConfig;
 import com.vinctor.UatuConfig;
 import com.vinctor.UatuContext;
-import com.vinctor.replace.ReplaceClassVisitor;
 import com.vinctor.trace.UatuClassVisitor;
 
 import org.objectweb.asm.ClassReader;
@@ -18,6 +16,13 @@ public class TransformHandler extends BaseHanlder {
 
     public static void start(TransformInvocation transformInvocation, UatuConfig config, UatuContext context) {
         new TransformHandler(transformInvocation, config, context).start();
+    }
+
+    public static void start(TransformInvocation transformInvocation, UatuConfig config,
+                             UatuContext context, boolean incremental) {
+        TransformHandler handler = new TransformHandler(transformInvocation, config, context);
+        handler.setIncremental(incremental);
+        handler.start();
     }
 
     public TransformHandler(TransformInvocation transformInvocation, UatuConfig config, UatuContext context) {
@@ -41,25 +46,17 @@ public class TransformHandler extends BaseHanlder {
         return handlerClass(bytes, true);
     }
 
-
     byte[] handlerClass(byte[] bytes, boolean isClassInJar) {
+        TraceConfig traceConfig = config.getTraceConfig();
+        // 不需要插桩时直接返回原始字节
+        if (traceConfig == null || !traceConfig.isEnable()) {
+            return bytes;
+        }
+
         ClassReader cr = new ClassReader(bytes);
         ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_MAXS);
-        ClassVisitor upstreamCv = cw;
-        TraceConfig traceConfig = config.getTraceConfig();
-        if (traceConfig != null && traceConfig.isEnable()) {
-            ClassVisitor traceCv = new UatuClassVisitor(upstreamCv, context,isClassInJar);
-            upstreamCv = traceCv;
-        }
-        ReplaceConfig replaceConfig = config.getReplaceConfig();
-        boolean isReplaceAllowjar = isClassInJar ? (replaceConfig.isJarEnable()) : true;
-        if (replaceConfig != null && replaceConfig.isEnable() && isReplaceAllowjar) {
-            ClassVisitor replaceCv = new ReplaceClassVisitor(upstreamCv, context);
-            upstreamCv = replaceCv;
-        }
-        cr.accept(upstreamCv, ClassReader.EXPAND_FRAMES);
-
-        byte[] code = cw.toByteArray();
-        return code;
+        ClassVisitor cv = new UatuClassVisitor(cw, context, isClassInJar);
+        cr.accept(cv, ClassReader.EXPAND_FRAMES);
+        return cw.toByteArray();
     }
 }
